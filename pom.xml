@@ -6,7 +6,49 @@
 
     <groupId>com.sheldon</groupId>
     <artifactId>tsdb</artifactId>
+    <packaging>pom</packaging>
     <version>0.1-SNAPSHOT</version>
+    <name>TSDB POM</name>
 
+    <description>This is the top level project that builds.</description>
+
+    <modules>
+        <module>tsfile</module>
+        <module>tsdb-server</module>
+        <module>tsdb-antlr4</module>
+        <module>tsdb-jdbc</module>
+        <module>tsdb-thrift</module>
+        <module>tsdb-rpc</module>
+        <module>tsdb-session</module>
+
+    </modules>
+
+    <properties>
+
+    </properties>
+
+    <profiles>
+        <profile>
+            <id>openjdk11</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+                <jdk>11</jdk>
+            </activation>
+            <properties>
+                <maven.compiler.source>11</maven.compiler.source>
+                <maven.compiler.target>11</maven.compiler.target>
+                <maven.compiler.compilerVersion>11</maven.compiler.compilerVersion>
+
+            </properties>
+        </profile>
+    </profiles>
+
+    <dependencyManagement>
+
+    </dependencyManagement>
+
+    <build>
+
+    </build>
 
 </project>
