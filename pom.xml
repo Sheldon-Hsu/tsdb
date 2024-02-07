@@ -20,6 +20,7 @@
         <module>tsdb-thrift</module>
         <module>tsdb-rpc</module>
         <module>tsdb-session</module>
+        <module>common</module>
 
     </modules>
 
@@ -44,7 +45,13 @@
     </profiles>
 
     <dependencyManagement>
-
+        <dependencies>
+            <dependency>
+                <artifactId>common</artifactId>
+                <groupId>com.tsdb</groupId>
+                <version>${project.version}</version>
+            </dependency>
+        </dependencies>
     </dependencyManagement>
 
     <build>
