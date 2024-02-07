@@ -1,0 +1,9 @@
+@startjson
+{
+"magic":"tsFile",
+"version":"int",
+"chunkStartPoints":"List<int>",
+"chunk":"chunk",
+"tail":"tsFile"
+}
+@endjson

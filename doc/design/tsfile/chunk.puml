@@ -1,0 +1,23 @@
+@startjson
+{
+	"head": {
+		"statistics": {
+			"max": "list<max<DataType>>",
+			"min": "list<min<DataType>>",
+			"sum": "list<sum<DataType>>",
+			"count": "list<count<DataType>>",
+			"first": "list<DataType>",
+			"last": "list<DataType>",
+			"startTime": "long",
+			"endTime": "long",
+			"mbr": "binary"
+		}
+	},
+	"numOfPage": "int",
+	"size": "long",
+	"data": {
+		"page": "page",
+		"...": "..."
+	}
+}
+@endjson
