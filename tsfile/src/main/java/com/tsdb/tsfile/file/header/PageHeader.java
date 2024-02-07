@@ -1,5 +1,7 @@
 package com.tsdb.tsfile.file.header;
 
+import com.tsdb.tsfile.file.header.statistics.PageStatistics;
+
 public class PageHeader {
     private int uncompressedSize;
     private int compressedSize;

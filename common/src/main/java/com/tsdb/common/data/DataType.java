@@ -5,6 +5,8 @@ public enum  DataType {
     LONG(1),
     DOUBLE(2),
     FLOAT(3),
+    BOOLEAN(3),
+    ARRAY(3),
     VARCHAR(4);
 
     private int code;
