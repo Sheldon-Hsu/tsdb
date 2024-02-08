@@ -6,4 +6,4 @@ The goal of TSDB is to be an excellent time series database. It will have severa
 
 Based on point 4 above, TSDB will become a member of the HTAP database.
 
-If you are interested in participating in this project, please contact me. Thank you so much to everyone who has followed TSDB.
+If you are interested in joining this project, please contact me. Thank you so much to everyone who has followed TSDB.

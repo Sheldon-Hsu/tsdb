@@ -16,9 +16,13 @@
 		}
 	},
 	"data": {
-		"column1ValueList": "values",
-		"column2ValueList": "values",
-		"...": "..."
+	"pageData":{
+		    "timestamps":"long",
+    		"column1ValueList": "values",
+    		"column2ValueList": "values",
+    		"...": "..."
+	},
+	"pageData":"..."
 	}
 }
 @endjson

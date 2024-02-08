@@ -1,0 +1,15 @@
+@startjson
+{
+	"head": {
+	    "id":"int",
+	    "chunkSize": "long",
+	        "numOfPages": "int",
+	    "pageHeadOffsetList":"List<int>",
+	    "pageHeadSizeList":"List<int>"
+	},
+	"data": {
+		"page": "page",
+		"...": "..."
+	}
+}
+@endjson

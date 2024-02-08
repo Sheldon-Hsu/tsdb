@@ -1,0 +1,15 @@
+@startjson
+{
+"head":{
+"magic":"tsFile",
+"version":"int"
+},
+"data":{
+"chunk":"chunk1",
+"chunk":"chunk2",
+"...":"..."
+},
+"index":"index",
+"tail":"tsFile"
+}
+@endjson

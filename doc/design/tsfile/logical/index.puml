@@ -1,6 +1,8 @@
 @startjson
 {
-	"head": {
+	"chunkIndex": [{
+		"id": "int",
+		"chunkHeadOffset": "long",
 		"statistics": {
 			"max": "list<max<DataType>>",
 			"min": "list<min<DataType>>",
@@ -12,12 +14,20 @@
 			"endTime": "long",
 			"mbr": "binary"
 		}
-	},
-	"numOfPage": "int",
-	"size": "long",
-	"data": {
-		"page": "page",
+	}],
+	"timeSeriesIndex":[ {
+		"id": "int",
+		"chunkIndexSizeList": "List<long>",
+		"chunkIndexOffsetList": "List<long>"
+	}],
+	"timeSeriesIndexOffset": [{
+		"id": "int",
+		"offset": "long",
+		"size": "int"
+	}, {
 		"...": "..."
-	}
+	}],
+
+	"bloomFilter": "binary"
 }
 @endjson
