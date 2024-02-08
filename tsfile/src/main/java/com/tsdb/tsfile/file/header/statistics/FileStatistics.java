@@ -4,6 +4,7 @@ import com.tsdb.tsfile.file.header.statistics.value.ValueStatistics;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.nio.ByteBuffer;
 
 public abstract class FileStatistics {
