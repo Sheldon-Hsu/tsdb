@@ -12,7 +12,13 @@ import java.nio.ByteBuffer;
 public abstract class ValueStatistics<T> {
 
     protected int count = 0;
+    protected DataType dataType;
 
+    protected double doubleSum;
+    protected long longSum;
+
+
+    static final String STATS_UNSUPPORTED_MSG = "%s statistics does not support: %s";
 
     public abstract void deserialize(InputStream inputStream) throws IOException;
 
@@ -49,8 +55,6 @@ public abstract class ValueStatistics<T> {
                 return new DoubleStatistics();
             case FLOAT:
                 return new FloatStatistics();
-            case ARRAY:
-                return new BinaryStatistics();
             default:
                 throw new UnsupportedColumnTypeException(type.toString());
         }
@@ -69,13 +73,14 @@ public abstract class ValueStatistics<T> {
 
     public abstract long getSumLongValue();
 
+    public abstract void update(T value);
+
 
     public void setCount(int count) {
         this.count = count;
     }
 
-
-
-
-
+    public DataType getDataType() {
+        return dataType;
+    }
 }
