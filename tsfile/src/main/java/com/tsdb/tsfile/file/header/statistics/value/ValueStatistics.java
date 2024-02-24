@@ -45,7 +45,7 @@ public abstract class ValueStatistics<T> {
         switch (type) {
             case INTEGER:
                 return new IntegerStatistics();
-            case LONG:
+            case BIGINT:
                 return new LongStatistics();
             case VARCHAR:
                 return new StringStatistics();

@@ -1,18 +1,24 @@
 package com.tsdb.common.data;
 
+import java.sql.Types;
+
 public enum DataType {
-    BOOLEAN((byte) 0),
-    INTEGER((byte) 1),
-    FLOAT((byte) 2),
-    LONG((byte) 3),
-    DOUBLE((byte) 4),
-    VARCHAR((byte) 5),
-    ARRAY((byte) 6),
-    BINARY((byte) 7);
+    BOOLEAN(Types.BOOLEAN),
+    SMALLINT(Types.SMALLINT),
+    INTEGER(Types.INTEGER),
+    FLOAT(Types.FLOAT),
+    BIGINT(Types.BIGINT),
+    DOUBLE(Types.DOUBLE),
+    VARCHAR(Types.VARCHAR),
+    ARRAY(Types.ARRAY),
+    BINARY(Types.BINARY),
+    DATE(Types.DATE),
+    TIMESTAMP(Types.TIMESTAMP)
+    ;
 
-    private final byte code;
+    private final Integer code;
 
-    DataType(byte code) {
+    DataType(Integer code) {
         this.code = code;
     }
 
@@ -20,19 +26,25 @@ public enum DataType {
         switch (this) {
             case BOOLEAN:
                 return 1;
+            case SMALLINT:
+                return 2;
             case INTEGER:
             case FLOAT:
                 return 4;
-            case LONG:
+            case BIGINT:
             case DOUBLE:
+            case TIMESTAMP:
+            case DATE:
                 return 8;
             case VARCHAR:
+            case ARRAY:
+            case BINARY:
             default:
                 return 0;
         }
     }
 
-    public byte getCode() {
+    public Integer getCode() {
         return code;
     }
 }

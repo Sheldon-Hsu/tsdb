@@ -6,15 +6,15 @@ package com.tsdb.tsfile.exception.compress;
  */
 public class CompressionTypeNotSupportedException extends RuntimeException {
 
-  private static final long serialVersionUID = -8659367946905193448L;
-  private final Class<?> codecClass;
+    private static final long serialVersionUID = -8659367946905193448L;
+    private final Class<?> codecClass;
 
-  public CompressionTypeNotSupportedException(String codecType) {
-    super("codec not supported: " + codecType);
-    this.codecClass = null;
-  }
+    public CompressionTypeNotSupportedException(String codecType) {
+        super("codec not supported: " + codecType);
+        this.codecClass = null;
+    }
 
-  public Class<?> getCodecClass() {
-    return codecClass;
-  }
+    public Class<?> getCodecClass() {
+        return codecClass;
+    }
 }

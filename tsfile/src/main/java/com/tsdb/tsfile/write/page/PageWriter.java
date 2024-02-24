@@ -5,10 +5,11 @@ import com.tsdb.common.data.Binary;
 import com.tsdb.common.data.DataType;
 import com.tsdb.common.io.PublicBAOS;
 import com.tsdb.tsfile.compress.ICompressor;
-import com.tsdb.tsfile.encode.Encoder;
+import com.tsdb.tsfile.encoding.encode.Encoder;
 import com.tsdb.tsfile.file.header.statistics.FileStatistics;
 import com.tsdb.tsfile.file.header.statistics.PageStatistics;
 import com.tsdb.tsfile.memory.TVList;
+import com.tsdb.tsfile.meta.Schema;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,8 +28,8 @@ public class PageWriter {
     private DataType[] dataTypes;
 
 
-    public PageWriter() {
-        this(null, null);
+    public PageWriter(Schema schema) {
+        schema.getEncoders();
     }
 
 
@@ -41,7 +42,7 @@ public class PageWriter {
     }
 
 
-    public void transTVList2Page(TVList tvList){
+    public void transTVList2Page(TVList tvList) {
 //      todo  这里把tvlist写入到IO流里面
         tvList.getTimestamps();
         tvList.getValues();
@@ -50,7 +51,7 @@ public class PageWriter {
     /**
      * write a column of data
      **/
-    public void write(int columnIndex ,Object[] values) {
+    public void write(int columnIndex, Object[] values) {
 //      TODO 这里把一列数据进行编码压缩后 再通过通用的压缩方法进行压缩
         for (int i = 0; i < values.length; i++) {
             DataType dataType = dataTypes[i];
@@ -62,14 +63,14 @@ public class PageWriter {
                     valueEncoder.encode((int) value, valueOut);
                 case FLOAT:
                     valueEncoder.encode((float) value, valueOut);
-                case LONG:
+                case BIGINT:
                     valueEncoder.encode((long) value, valueOut);
                 case DOUBLE:
                     valueEncoder.encode((double) value, valueOut);
                 case VARCHAR:
                     Binary binary = new Binary((String) value, TSDBConstant.STRING_CHARSET);
                     int length = binary.getLength();
-                    valueEncoder.encode(length,valueOut);
+                    valueEncoder.encode(length, valueOut);
                     valueEncoder.encode(binary, valueOut);
             }
         }
@@ -79,10 +80,10 @@ public class PageWriter {
     /**
      * write timestamps
      */
-    public void writeTimeStamps(long[] timestamps){
+    public void writeTimeStamps(long[] timestamps) {
         for (int i = 0; i < timestamps.length; i++) {
             long timestamp = timestamps[i];
-            timeEncoder.encode(timestamp,timeOut);
+            timeEncoder.encode(timestamp, timeOut);
         }
     }
 

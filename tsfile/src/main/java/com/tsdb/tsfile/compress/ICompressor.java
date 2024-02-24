@@ -4,7 +4,6 @@ package com.tsdb.tsfile.compress;
 import com.github.luben.zstd.Zstd;
 import com.tsdb.tsfile.exception.compress.CompressionTypeNotSupportedException;
 import com.tsdb.tsfile.exception.compress.GZIPCompressOverflowException;
-import net.jpountz.lz4.LZ4Compressor;
 import net.jpountz.lz4.LZ4Factory;
 import org.tukaani.xz.LZMA2Options;
 import org.tukaani.xz.XZInputStream;
@@ -45,7 +44,7 @@ public interface ICompressor extends Serializable {
       case SNAPPY:
         return new SnappyCompressor();
       case LZ4:
-        return new IOTDBLZ4Compressor();
+        return new LZ4Compressor();
       case GZIP:
         return new GZIPCompressor();
       case ZSTD:
@@ -174,20 +173,20 @@ public interface ICompressor extends Serializable {
     }
   }
 
-  class IOTDBLZ4Compressor implements ICompressor {
+  class LZ4Compressor implements ICompressor {
     /**
      * This instance should be cached to avoid performance problem. See:
      * https://github.com/lz4/lz4-java/issues/152 and https://github.com/apache/spark/pull/24905
      */
     private static final LZ4Factory factory = LZ4Factory.fastestInstance();
 
-    private static final LZ4Compressor compressor = factory.fastCompressor();
+    private static final net.jpountz.lz4.LZ4Compressor compressor = factory.fastCompressor();
 
     public static LZ4Factory getFactory() {
       return factory;
     }
 
-    public IOTDBLZ4Compressor() {
+    public LZ4Compressor() {
       super();
     }
 

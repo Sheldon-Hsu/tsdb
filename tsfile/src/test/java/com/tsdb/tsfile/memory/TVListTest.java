@@ -15,7 +15,7 @@ import static com.tsdb.common.data.DataType.*;
 class TVListTest {
     int dataSize = 100;
     int columnSize = 5;
-    DataType[] dataType = new DataType[]{INTEGER,LONG,FLOAT,DOUBLE,VARCHAR};
+    DataType[] dataType = new DataType[]{INTEGER, BIGINT,FLOAT,DOUBLE,VARCHAR};
     long startTime = 10000;
     TVList tvList;
     long[] timestamps = new long[dataSize];

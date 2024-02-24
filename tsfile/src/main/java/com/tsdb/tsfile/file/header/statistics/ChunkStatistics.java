@@ -4,8 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 
-public class ChunkStatistics extends FileStatistics{
-
+public class ChunkStatistics extends FileStatistics {
 
 
     @Override

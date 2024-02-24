@@ -20,7 +20,7 @@ public class LongStatistics extends ValueStatistics<Long> {
 
 
     public LongStatistics() {
-        dataType = DataType.LONG;
+        dataType = DataType.BIGINT;
     }
 
     @Override
