@@ -8,6 +8,7 @@ import com.tsdb.tsfile.compress.ICompressor;
 import com.tsdb.tsfile.encode.Encoder;
 import com.tsdb.tsfile.file.header.statistics.FileStatistics;
 import com.tsdb.tsfile.file.header.statistics.PageStatistics;
+import com.tsdb.tsfile.memory.TVList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,10 +41,17 @@ public class PageWriter {
     }
 
 
+    public void transTVList2Page(TVList tvList){
+//      todo  这里把tvlist写入到IO流里面
+        tvList.getTimestamps();
+        tvList.getValues();
+    }
+
     /**
      * write a column of data
      **/
     public void write(int columnIndex ,Object[] values) {
+//      TODO 这里把一列数据进行编码压缩后 再通过通用的压缩方法进行压缩
         for (int i = 0; i < values.length; i++) {
             DataType dataType = dataTypes[i];
             Object value = values[i];

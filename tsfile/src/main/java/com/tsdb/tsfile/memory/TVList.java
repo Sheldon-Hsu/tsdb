@@ -114,4 +114,12 @@ public class TVList {
             }
         }
     }
+
+    public List<long[]> getTimestamps() {
+        return timestamps;
+    }
+
+    public List<Object[][]> getValues() {
+        return values;
+    }
 }
