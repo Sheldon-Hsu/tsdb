@@ -19,6 +19,8 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
+import static com.tsdb.common.config.TSDBConstant.STRING_CHARSET;
+
 public class Binary implements Comparable<Binary>, Serializable {
 
     private static final long serialVersionUID = 6970400245277422524L;
@@ -101,8 +103,7 @@ public class Binary implements Comparable<Binary>, Serializable {
 
     @Override
     public String toString() {
-        // use UTF_8 by default since toString do not provide parameter
-        return getStringValue(StandardCharsets.UTF_8);
+        return getStringValue(STRING_CHARSET);
     }
 
     public byte[] getValues() {

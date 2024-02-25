@@ -23,10 +23,10 @@ import java.util.Map;
 
 public class Schema implements Serializable {
     private static final long serialVersionUID = 2103464296109291362L;
-
+    DataType[] dataTypes ;
 
     public DataType[] getDataTypesOrdered(){
-        return new DataType[0];
+        return dataTypes;
     }
 
     private Map<DataType, TSEncoding> encoder = new HashMap<>();
@@ -38,5 +38,9 @@ public class Schema implements Serializable {
 
     public Map<DataType, TSEncoding> getEncoders() {
         return encoder;
+    }
+
+    public void setDataTypes(DataType[] dataTypes) {
+        this.dataTypes = dataTypes;
     }
 }

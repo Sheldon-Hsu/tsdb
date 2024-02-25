@@ -29,7 +29,6 @@ public class PublicBAOS extends ByteArrayOutputStream {
     }
 
     public byte[] getBuf() {
-
         return this.buf;
     }
 

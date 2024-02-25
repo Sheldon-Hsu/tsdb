@@ -14,7 +14,6 @@
 
 package com.tsdb.tsfile.write.page;
 
-import com.tsdb.common.config.TSDBConstant;
 import com.tsdb.common.data.Binary;
 import com.tsdb.common.data.DataType;
 import com.tsdb.common.io.PublicBAOS;
@@ -22,6 +21,7 @@ import com.tsdb.tsfile.compress.ICompressor;
 import com.tsdb.tsfile.encoding.EncodingBuilder;
 import com.tsdb.tsfile.encoding.TSEncoding;
 import com.tsdb.tsfile.encoding.encode.Encoder;
+import com.tsdb.tsfile.exception.write.DataNotMatchException;
 import com.tsdb.tsfile.file.header.statistics.FileStatistics;
 import com.tsdb.tsfile.file.header.statistics.PageStatistics;
 import com.tsdb.tsfile.memory.TVList;
@@ -29,10 +29,11 @@ import com.tsdb.tsfile.meta.Schema;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import static com.tsdb.common.data.DataType.*;
+import static com.tsdb.common.data.DataType.BIGINT;
 
 public class PageWriter {
     private static final Logger logger = LoggerFactory.getLogger(PageWriter.class);
@@ -51,51 +52,131 @@ public class PageWriter {
 
     public PageWriter(Schema schema) {
         dataTypes = schema.getDataTypesOrdered();
+        int columnSize = dataTypes.length;
         Map<DataType, TSEncoding> encoderMap = schema.getEncoders();
-        for (int i = 0; i < dataTypes.length; i++) {
+        valueEncoders = new Encoder[columnSize];
+        for (int i = 0; i < columnSize; i++) {
             DataType dataType = dataTypes[i];
             valueEncoders[i] = getEncoderByDataType(dataType, encoderMap);
         }
-        timeEncoder = getEncoderByDataType(BIGINT,encoderMap);
+        timeEncoder = getEncoderByDataType(BIGINT, encoderMap);
         this.timeOut = new PublicBAOS();
         this.valueOut = new PublicBAOS();
         this.statistics = new PageStatistics();
     }
 
 
-
-
     public void transTVList2Page(TVList tvList) {
-        List<long[]> times =  tvList.getTimestamps();
+        check(tvList);
+        List<long[]> times = tvList.getTimestamps();
         List<Object[]> values = tvList.getValues();
+        if (tvList.getRowCount() == 0) return;
+        int rowCount = tvList.getRowCount();
+        int lastArrayElementSize = rowCount % TVList.ARRAY_SIZE;
+        for (int i = 0; i < values.size() - 1; i++) {
+            writeTimeStamps(times.get(i));
+            Object columnValues = values.get(i);
+            for (int columnIndex = 0; columnIndex < dataTypes.length; columnIndex++) {
+                transAndWrite(columnIndex, dataTypes[columnIndex], columnValues, TVList.ARRAY_SIZE);
+            }
+        }
+        Object[] last = values.get(values.size() - 1);
+        long[] lastTimes = times.get(times.size() - 1);
+        lastTimes = Arrays.copyOf(lastTimes, lastArrayElementSize);
+        writeTimeStamps(lastTimes);
+        for (int columnIndex = 0; columnIndex < dataTypes.length; columnIndex++) {
+            Object lastArray = last[columnIndex];
+
+            transAndWrite(columnIndex, dataTypes[columnIndex], lastArray, lastArrayElementSize);
+        }
+    }
+
+    private void transAndWrite(int index, DataType dataType, Object columnValues, int stopIndex) {
+        switch (dataType) {
+            case BOOLEAN:
+                writeColumn(valueEncoders[index], (boolean[]) columnValues, stopIndex);
+                break;
+            case INTEGER:
+                writeColumn(valueEncoders[index], (int[]) columnValues, stopIndex);
+                break;
+            case FLOAT:
+                writeColumn(valueEncoders[index], (float[]) columnValues, stopIndex);
+                break;
+            case BIGINT:
+                writeColumn(valueEncoders[index], (long[]) columnValues, stopIndex);
+                break;
+            case DOUBLE:
+                writeColumn(valueEncoders[index], (double[]) columnValues, stopIndex);
+                break;
+            case VARCHAR:
+                writeColumn(valueEncoders[index], (byte[][]) columnValues, stopIndex);
+                break;
+            case BINARY:
+                writeColumn(valueEncoders[index], (Binary[]) columnValues, stopIndex);
+                break;
+        }
     }
 
     /**
      * write a column of data
      **/
-    public void writeColumn(int columnIndex, Object[] values) {
-//      TODO 这里把一列数据进行编码压缩后 再通过通用的压缩方法进行压缩
-        for (int i = 0; i < values.length; i++) {
-            DataType dataType = dataTypes[i];
-            Object value = values[i];
-            switch (dataType) {
-                case BOOLEAN:
-                    valueEncoders[columnIndex].encode((boolean) value, valueOut);
-                case INTEGER:
-                    valueEncoders[columnIndex].encode((int) value, valueOut);
-                case FLOAT:
-                    valueEncoders[columnIndex].encode((float) value, valueOut);
-                case BIGINT:
-                    valueEncoders[columnIndex].encode((long) value, valueOut);
-                case DOUBLE:
-                    valueEncoders[columnIndex].encode((double) value, valueOut);
-                case VARCHAR:
-                    Binary binary = new Binary((String) value, TSDBConstant.STRING_CHARSET);
-                    valueEncoders[columnIndex].encode(binary, valueOut);
-            }
+    public void writeColumn(Encoder encoder, boolean[] values, int stopIndex) {
+        for (int i = 0; i < values.length && i < stopIndex; i++) {
+            boolean value = values[i];
+            encoder.encode(value, valueOut);
         }
-        statistics.update(columnIndex, values);
     }
+
+    public void writeColumn(Encoder encoder, short[] values, int stopIndex) {
+        for (int i = 0; i < values.length && i < stopIndex; i++) {
+            short value = values[i];
+            encoder.encode(value, valueOut);
+        }
+    }
+
+    public void writeColumn(Encoder encoder, int[] values, int stopIndex) {
+        for (int i = 0; i < values.length && i < stopIndex; i++) {
+            int value = values[i];
+            encoder.encode(value, valueOut);
+        }
+    }
+
+    public void writeColumn(Encoder encoder, float[] values, int stopIndex) {
+        for (int i = 0; i < values.length && i < stopIndex; i++) {
+            float value = values[i];
+            encoder.encode(value, valueOut);
+        }
+    }
+
+    public void writeColumn(Encoder encoder, long[] values, int stopIndex) {
+        for (int i = 0; i < values.length && i < stopIndex; i++) {
+            long value = values[i];
+            encoder.encode(value, valueOut);
+        }
+    }
+
+    public void writeColumn(Encoder encoder, double[] values, int stopIndex) {
+        for (int i = 0; i < values.length && i < stopIndex; i++) {
+            double value = values[i];
+            encoder.encode(value, valueOut);
+        }
+    }
+
+    public void writeColumn(Encoder encoder, byte[][] values, int stopIndex) {
+        for (int i = 0; i < values.length && i < stopIndex; i++) {
+            byte[] value = values[i];
+            encoder.encode(value, valueOut);
+        }
+    }
+
+
+    public void writeColumn(Encoder encoder, Binary[] values, int stopIndex) {
+        for (int i = 0; i < values.length && i < stopIndex; i++) {
+            Binary value = values[i];
+            encoder.encode(value, valueOut);
+        }
+    }
+
 
     /**
      * write timestamps
@@ -111,4 +192,13 @@ public class PageWriter {
         return EncodingBuilder.getEncodingBuilder(encoderMap.get(dataType)).getEncoder(dataType);
     }
 
+    private void check(TVList tvList) {
+        if (!Arrays.equals(tvList.getColumnDataType(), dataTypes)) {
+            throw new DataNotMatchException("data types in pageWriter", "data types in  TVList");
+        }
+        if (tvList.getValues().size() != tvList.getTimestamps().size()) {
+            throw new DataNotMatchException("timestamps in TVList", "values in TVList");
+        }
+
+    }
 }

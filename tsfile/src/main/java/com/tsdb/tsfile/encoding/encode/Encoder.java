@@ -73,6 +73,11 @@ public abstract class Encoder {
         throw new TsFileEncodingException("Method encode Binary is not supported by Encoder");
     }
 
+    public void encode(byte[] value, ByteArrayOutputStream out) {
+        throw new TsFileEncodingException("Method encode byte[] is not supported by Encoder");
+    }
+
+
     public void encode(BigDecimal value, ByteArrayOutputStream out) {
         throw new TsFileEncodingException("Method encode BigDecimal is not supported by Encoder");
     }

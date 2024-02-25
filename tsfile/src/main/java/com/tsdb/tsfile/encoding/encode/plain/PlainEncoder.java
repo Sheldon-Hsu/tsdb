@@ -98,11 +98,16 @@ public class PlainEncoder extends Encoder {
 
     @Override
     public void encode(Binary value, ByteArrayOutputStream out) {
+        encode(value.getValues(),out);
+    }
+
+    @Override
+    public void encode(byte[] value, ByteArrayOutputStream out) {
         try {
             // write the length of the bytes
-            encode(value.getLength(), out);
+            encode(value.length, out);
             // write value
-            out.write(value.getValues());
+            out.write(value);
         } catch (IOException e) {
             logger.error(
                     "tsFile-encoding PlainEncoder: error occurs when encode Binary value {}", value, e);

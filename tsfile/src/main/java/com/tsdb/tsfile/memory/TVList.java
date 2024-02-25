@@ -61,7 +61,6 @@ public abstract class TVList {
 
     public TVList(DataType[] columnDataType) {
 
-
         this.columnDataType = columnDataType;
         this.columnSize = columnDataType.length;
         this.values = new ArrayList<>(1024);
@@ -77,7 +76,7 @@ public abstract class TVList {
      * @param timestamp
      * @param lineValue
      */
-    abstract void put(long timestamp, Object[] lineValue);
+    public abstract void put(long timestamp, Object[] lineValue);
 
     public int getRowCount() {
         return rowCount;
@@ -114,5 +113,9 @@ public abstract class TVList {
 
     public List<Object[]> getValues() {
         return values;
+    }
+
+    public DataType[] getColumnDataType() {
+        return columnDataType;
     }
 }

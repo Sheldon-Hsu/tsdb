@@ -17,7 +17,6 @@ package com.tsdb.tsfile.memory;
 import com.tsdb.common.config.TSDBConstant;
 import com.tsdb.common.data.Binary;
 import com.tsdb.common.data.DataType;
-import com.tsdb.common.utils.StringUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -122,8 +121,6 @@ public class AlignedTVList extends TVList {
 
                     break;
             }
-
-
         }
 
         maxTime = Math.max(maxTime, timestamp);
