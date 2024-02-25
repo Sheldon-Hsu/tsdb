@@ -15,7 +15,6 @@
 package com.tsdb.tsfile.memory;
 
 import com.tsdb.common.data.DataType;
-import com.tsdb.common.utils.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,13 +31,26 @@ public abstract class TVList {
 
     public static final int ARRAY_SIZE = 1024;
 
-    //    todo Try to use basic types instead of boxed type for efficiency
-    protected List<Object[][]> values;
+    /**
+     * An easy way to understand datatype structure is List<Object>[],
+     * where each element in the array represents all the data for a column,
+     * but this requires multiple calculations as the List is expanded,
+     * so use List<Object[]> for efficiency,where each element of the List is a two-dimensional array.
+     * The array length is N * 1024,N is column number and 1024 is the fixed length for each extension.
+     * Object[] represent two-dimensional arrays in order to avoid the use of boxed types, to save memory
+     */
+    protected List<Object[]> values;
 
     /**
      * Used to calculate the memory size
      */
     protected long length;
+    /**
+     * A row of data is divided into two types: fixed length and floating length.
+     * The numeric type is fixed length, such as int float,
+     * and the character type is floating length, such as varchar.
+     * The length is calculated here to better control memory usage
+     */
     protected int fixedLength;
     protected final Map<Integer, DataType> lengthFloatData = new HashMap<>();
     protected int rowCount;
@@ -49,9 +61,11 @@ public abstract class TVList {
 
     public TVList(DataType[] columnDataType) {
 
-        this.values = new ArrayList<>();
+
         this.columnDataType = columnDataType;
         this.columnSize = columnDataType.length;
+        this.values = new ArrayList<>(1024);
+
         this.rowCount = 0;
         calcFixedLength();
     }
@@ -98,7 +112,7 @@ public abstract class TVList {
 
     public abstract List<long[]> getTimestamps();
 
-    public List<Object[][]> getValues() {
+    public List<Object[]> getValues() {
         return values;
     }
 }

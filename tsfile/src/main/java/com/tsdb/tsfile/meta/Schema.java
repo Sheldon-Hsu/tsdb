@@ -15,7 +15,7 @@
 package com.tsdb.tsfile.meta;
 
 import com.tsdb.common.data.DataType;
-import com.tsdb.tsfile.encoding.encode.Encoder;
+import com.tsdb.tsfile.encoding.TSEncoding;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -24,14 +24,19 @@ import java.util.Map;
 public class Schema implements Serializable {
     private static final long serialVersionUID = 2103464296109291362L;
 
-    private Map<DataType, Encoder> encoder = new HashMap<>();
+
+    public DataType[] getDataTypesOrdered(){
+        return new DataType[0];
+    }
+
+    private Map<DataType, TSEncoding> encoder = new HashMap<>();
 
 
-    public void setEncoder(Map<DataType, Encoder> encoder) {
+    public void setEncoder(Map<DataType, TSEncoding> encoder) {
         this.encoder = encoder;
     }
 
-    public Map<DataType, Encoder> getEncoders() {
+    public Map<DataType, TSEncoding> getEncoders() {
         return encoder;
     }
 }

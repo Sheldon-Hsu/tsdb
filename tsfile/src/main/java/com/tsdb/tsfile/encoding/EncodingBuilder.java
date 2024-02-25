@@ -19,7 +19,7 @@ import com.tsdb.common.exception.UnSupportedDataTypeException;
 import com.tsdb.tsfile.conf.TSFileConfig;
 import com.tsdb.tsfile.conf.TSFileDescriptor;
 import com.tsdb.tsfile.encoding.encode.Encoder;
-import com.tsdb.tsfile.encoding.encode.PlainEncoder;
+import com.tsdb.tsfile.encoding.encode.plain.PlainEncoder;
 import com.tsdb.tsfile.encoding.encode.chimp.DoublePrecisionChimpEncoder;
 import com.tsdb.tsfile.encoding.encode.chimp.IntChimpEncoder;
 import com.tsdb.tsfile.encoding.encode.chimp.LongChimpEncoder;

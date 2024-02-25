@@ -29,7 +29,7 @@ import static com.tsdb.common.data.DataType.*;
 class TVListTest {
     int dataSize = 100;
     int columnSize = 5;
-    DataType[] dataType = new DataType[]{INTEGER, BIGINT,FLOAT,DOUBLE,VARCHAR};
+    DataType[] dataType = new DataType[]{INTEGER, BIGINT, FLOAT, DOUBLE, VARCHAR};
     long startTime = 10000;
     TVList tvList;
     long[] timestamps = new long[dataSize];
@@ -41,9 +41,12 @@ class TVListTest {
         for (int lineIndex = 0; lineIndex < dataSize; lineIndex++) {
             timestamps[lineIndex] = startTime + lineIndex + 1;
             Object[] line = new Object[columnSize];
-            for (int columnIndex = 1; columnIndex <= columnSize; columnIndex++) {
-                line[columnIndex -1] = "column-" + columnIndex + "-" + lineIndex;
-            }
+            line[0] = 1;
+            line[1] = 1L;
+            line[2] = 1f;
+            line[3] = 1d;
+            line[4] = "column-" + lineIndex;
+
             lineValue.add(line);
         }
 

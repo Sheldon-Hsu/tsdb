@@ -15,19 +15,18 @@
 package com.tsdb.tsfile.encoding;
 
 public enum TSEncoding {
-    PLAIN((byte) 0),
-
+    NULLL((byte)0),
+    PLAIN((byte) 1),
     RLE((byte) 2),
     DIFF((byte) 3),
     TS_2DIFF((byte) 4),
     BITMAP((byte) 5),
-    REGULAR((byte) 7),
-    GORILLA((byte) 8),
-    ZIGZAG((byte) 9),
-
-    CHIMP((byte) 11),
-    SPRINTZ((byte) 12),
-    RLBE((byte) 13);
+    REGULAR((byte) 6),
+    GORILLA((byte) 7),
+    ZIGZAG((byte) 8),
+    CHIMP((byte) 9),
+    SPRINTZ((byte) 10),
+    RLBE((byte) 11);
     private final byte type;
 
     TSEncoding(byte type) {
