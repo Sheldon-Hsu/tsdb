@@ -37,7 +37,7 @@ class TVListTest {
 
     @BeforeAll
     void init() {
-        tvList = new TVList(dataType);
+        tvList = new AlignedTVList(dataType);
         for (int lineIndex = 0; lineIndex < dataSize; lineIndex++) {
             timestamps[lineIndex] = startTime + lineIndex + 1;
             Object[] line = new Object[columnSize];

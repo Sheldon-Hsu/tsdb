@@ -20,9 +20,9 @@ import com.tsdb.common.data.DataType;
 /**
  * Time series data memory model, for read
  */
-public class ReadTVList extends TVList {
+public class AlignedReadTVList extends AlignedTVList {
 
-    public ReadTVList(DataType[] columnDataType) {
+    public AlignedReadTVList(DataType[] columnDataType) {
         super(columnDataType);
     }
 }
