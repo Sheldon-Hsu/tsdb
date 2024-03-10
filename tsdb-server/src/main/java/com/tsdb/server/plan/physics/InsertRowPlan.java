@@ -12,18 +12,33 @@
  * limitations under the License.
  */
 
-package com.tsdb.common.config;
+package com.tsdb.server.plan.physics;
 
-public class TSDBConfig {
+import com.tsdb.tsfile.meta.MetaConstant;
 
-    private int maxMemStoreNumber = 0;
+public class InsertRowPlan implements PhysicalPlan{
 
 
-    public int getMaxMemStoreNumber() {
-        return maxMemStoreNumber;
+    public String getTable(){
+        return null;
     }
 
-    public void setMaxMemStoreNumber(int maxMemStoreNumber) {
-        this.maxMemStoreNumber = maxMemStoreNumber;
+    public String getView(){
+        return null;
+    }
+
+    @Override
+    public String getCatalog() {
+        return null;
+    }
+
+    @Override
+    public String getSchema() {
+        return null;
+    }
+
+    @Override
+    public MetaConstant.OBJECT getObject() {
+        return null;
     }
 }

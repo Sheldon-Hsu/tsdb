@@ -19,12 +19,18 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.tsdb</groupId>
-    <artifactId>tsdb</artifactId>
+    <artifactId>tsdb-parent</artifactId>
     <packaging>pom</packaging>
     <version>0.1-SNAPSHOT</version>
     <name>TSDB POM</name>
 
     <description>This is the top level project that builds.</description>
+    <licenses>
+        <license>
+            <name>The Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
 
     <modules>
         <module>tsfile</module>
@@ -35,7 +41,6 @@
         <module>tsdb-rpc</module>
         <module>tsdb-session</module>
         <module>common</module>
-
     </modules>
 
     <properties>
@@ -60,7 +65,6 @@
                 <maven.compiler.source>11</maven.compiler.source>
                 <maven.compiler.target>11</maven.compiler.target>
                 <maven.compiler.compilerVersion>11</maven.compiler.compilerVersion>
-
             </properties>
         </profile>
     </profiles>
@@ -72,6 +76,42 @@
                 <groupId>com.tsdb</groupId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <artifactId>anltr4</artifactId>
+                <groupId>com.tsdb</groupId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <artifactId>jdbc</artifactId>
+                <groupId>com.tsdb</groupId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <artifactId>rpc</artifactId>
+                <groupId>com.tsdb</groupId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <artifactId>server</artifactId>
+                <groupId>com.tsdb</groupId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <artifactId>session</artifactId>
+                <groupId>com.tsdb</groupId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <artifactId>thrift</artifactId>
+                <groupId>com.tsdb</groupId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <artifactId>tsfile</artifactId>
+                <groupId>com.tsdb</groupId>
+                <version>${project.version}</version>
+            </dependency>
+
 
             <dependency>
                 <groupId>org.slf4j</groupId>
@@ -121,23 +161,20 @@
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter-api</artifactId>
                 <version>${junit.version}</version>
+                <scope>test</scope>
             </dependency>
-
             <dependency>
                 <groupId>org.junit.platform</groupId>
                 <artifactId>junit-platform-launcher</artifactId>
                 <version>${junit.platform.version}</version>
                 <scope>test</scope>
             </dependency>
-
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter-engine</artifactId>
                 <version>${junit.version}</version>
                 <scope>test</scope>
             </dependency>
-
-
             <!--            test dependency end-->
         </dependencies>
 
@@ -159,6 +196,18 @@
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
         </dependency>
 
     </dependencies>

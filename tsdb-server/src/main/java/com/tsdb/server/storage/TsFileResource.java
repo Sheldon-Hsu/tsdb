@@ -12,18 +12,8 @@
  * limitations under the License.
  */
 
-package com.tsdb.common.config;
+package com.tsdb.server.storage;
 
-public class TSDBConfig {
+public class TsFileResource {
 
-    private int maxMemStoreNumber = 0;
-
-
-    public int getMaxMemStoreNumber() {
-        return maxMemStoreNumber;
-    }
-
-    public void setMaxMemStoreNumber(int maxMemStoreNumber) {
-        this.maxMemStoreNumber = maxMemStoreNumber;
-    }
 }

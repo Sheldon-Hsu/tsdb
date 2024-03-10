@@ -12,18 +12,7 @@
  * limitations under the License.
  */
 
-package com.tsdb.common.config;
+package com.tsdb.server.query;
 
-public class TSDBConfig {
-
-    private int maxMemStoreNumber = 0;
-
-
-    public int getMaxMemStoreNumber() {
-        return maxMemStoreNumber;
-    }
-
-    public void setMaxMemStoreNumber(int maxMemStoreNumber) {
-        this.maxMemStoreNumber = maxMemStoreNumber;
-    }
+public class QueryEngine {
 }

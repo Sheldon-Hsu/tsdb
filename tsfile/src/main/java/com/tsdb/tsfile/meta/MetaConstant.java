@@ -12,18 +12,19 @@
  * limitations under the License.
  */
 
-package com.tsdb.common.config;
+package com.tsdb.tsfile.meta;
 
-public class TSDBConfig {
+public class MetaConstant {
+    public static final String TABLE="TABLE";
 
-    private int maxMemStoreNumber = 0;
 
 
-    public int getMaxMemStoreNumber() {
-        return maxMemStoreNumber;
-    }
 
-    public void setMaxMemStoreNumber(int maxMemStoreNumber) {
-        this.maxMemStoreNumber = maxMemStoreNumber;
+    public enum OBJECT{
+        TABLE,
+        INDEX,
+        VIEW,
+        FUNCTION,
+        OTHER
     }
 }

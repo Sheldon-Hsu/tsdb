@@ -17,7 +17,7 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>tsdb</artifactId>
+        <artifactId>tsdb-parent</artifactId>
         <groupId>com.tsdb</groupId>
         <version>0.1-SNAPSHOT</version>
     </parent>
@@ -25,5 +25,16 @@
 
     <artifactId>server</artifactId>
 
+
+    <dependencies>
+        <dependency>
+            <artifactId>tsfile</artifactId>
+            <groupId>com.tsdb</groupId>
+        </dependency>
+        <dependency>
+            <artifactId>rpc</artifactId>
+            <groupId>com.tsdb</groupId>
+        </dependency>
+    </dependencies>
 
 </project>

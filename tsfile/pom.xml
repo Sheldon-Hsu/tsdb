@@ -17,7 +17,7 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>tsdb</artifactId>
+        <artifactId>tsdb-parent</artifactId>
         <groupId>com.tsdb</groupId>
         <version>0.1-SNAPSHOT</version>
     </parent>
@@ -30,21 +30,6 @@
         <dependency>
             <groupId>com.tsdb</groupId>
             <artifactId>common</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-core</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
         </dependency>
 
         <!--            compress dependency start-->

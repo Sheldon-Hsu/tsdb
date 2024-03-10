@@ -52,6 +52,7 @@ public class PageWriter {
 
     public PageWriter(Schema schema) {
         dataTypes = schema.getDataTypesOrdered();
+        compressor = ICompressor.getCompressor(schema.getCompressionType());
         int columnSize = dataTypes.length;
         Map<DataType, TSEncoding> encoderMap = schema.getEncoders();
         valueEncoders = new Encoder[columnSize];

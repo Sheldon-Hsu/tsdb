@@ -15,6 +15,7 @@
 package com.tsdb.tsfile.meta;
 
 import com.tsdb.common.data.DataType;
+import com.tsdb.tsfile.compress.CompressionType;
 import com.tsdb.tsfile.encoding.TSEncoding;
 
 import java.io.Serializable;
@@ -23,8 +24,8 @@ import java.util.Map;
 
 public class Schema implements Serializable {
     private static final long serialVersionUID = 2103464296109291362L;
-    DataType[] dataTypes ;
-
+    private DataType[] dataTypes ;
+    private CompressionType compressionType;
     public DataType[] getDataTypesOrdered(){
         return dataTypes;
     }
@@ -42,5 +43,13 @@ public class Schema implements Serializable {
 
     public void setDataTypes(DataType[] dataTypes) {
         this.dataTypes = dataTypes;
+    }
+
+    public CompressionType getCompressionType() {
+        return compressionType;
+    }
+
+    public void setCompressionType(CompressionType compressionType) {
+        this.compressionType = compressionType;
     }
 }

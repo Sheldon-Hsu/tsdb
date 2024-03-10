@@ -1,0 +1,14 @@
+@startwbs
+'https://plantuml.com/wbs-diagram
+
++ TSDB Instance(Top Leave)
+++ Catalog
++++ schema
+++++ table
++++++ Time series
+++++++ Tags
+++++++ Field
+++++ Index
+++++ View
+++++ function
+@endwbs

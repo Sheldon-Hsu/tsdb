@@ -12,18 +12,22 @@
  * limitations under the License.
  */
 
-package com.tsdb.common.config;
+package com.tsdb.server.service;
 
-public class TSDBConfig {
-
-    private int maxMemStoreNumber = 0;
+public class TSDB {
 
 
-    public int getMaxMemStoreNumber() {
-        return maxMemStoreNumber;
+
+
+
+
+    public static TSDB getInstance() {
+        return TSDBHolder.INSTANCE;
     }
+    private static class TSDBHolder {
 
-    public void setMaxMemStoreNumber(int maxMemStoreNumber) {
-        this.maxMemStoreNumber = maxMemStoreNumber;
+        private static final TSDB INSTANCE = new TSDB();
+
+        private TSDBHolder() {}
     }
 }
