@@ -20,7 +20,7 @@ public class MetaConstant {
 
 
 
-    public enum OBJECT{
+    public enum ObjectType {
         TABLE,
         INDEX,
         VIEW,

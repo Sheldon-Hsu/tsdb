@@ -38,7 +38,7 @@ public class InsertRowPlan implements PhysicalPlan{
     }
 
     @Override
-    public MetaConstant.OBJECT getObject() {
+    public MetaConstant.ObjectType getObject() {
         return null;
     }
 }

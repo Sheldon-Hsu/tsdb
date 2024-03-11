@@ -17,7 +17,25 @@ package com.tsdb.common.config;
 public class TSDBConfig {
 
     private int maxMemStoreNumber = 0;
+    private long workMemSize = 0L;
+    private int longestFlushTime = 0;
 
+
+    public int getLongestFlushTime() {
+        return longestFlushTime;
+    }
+
+    public void setLongestFlushTime(int longestFlushTime) {
+        this.longestFlushTime = longestFlushTime;
+    }
+
+    public long getWorkMemSize() {
+        return workMemSize;
+    }
+
+    public void setWorkMemSize(long workMemSize) {
+        this.workMemSize = workMemSize;
+    }
 
     public int getMaxMemStoreNumber() {
         return maxMemStoreNumber;

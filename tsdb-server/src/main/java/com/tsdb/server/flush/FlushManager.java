@@ -28,9 +28,15 @@
 
 package com.tsdb.server.flush;
 
+import com.tsdb.server.memory.IWMemStore;
 import com.tsdb.server.service.IService;
 
 public class FlushManager implements IService {
+
+    public void addToFlush(IWMemStore wMemStore){
+
+    }
+
     @Override
     public void start() {
 

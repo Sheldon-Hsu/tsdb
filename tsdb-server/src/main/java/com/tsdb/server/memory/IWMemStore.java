@@ -14,5 +14,12 @@
 
 package com.tsdb.server.memory;
 
+import com.tsdb.server.plan.physics.InsertRowPlan;
+import com.tsdb.server.plan.physics.InsertRowsPlan;
+
 public interface IWMemStore {
+    void insert(InsertRowPlan insertRowPlan);
+    void insert(InsertRowsPlan insertRowsPlan);
+    long getMemSize();
+
 }

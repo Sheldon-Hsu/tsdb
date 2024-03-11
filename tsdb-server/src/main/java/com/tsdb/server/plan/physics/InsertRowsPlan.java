@@ -28,7 +28,7 @@ public class InsertRowsPlan extends InsertRowPlan{
     }
 
     @Override
-    public MetaConstant.OBJECT getObject() {
+    public MetaConstant.ObjectType getObject() {
         return null;
     }
 }

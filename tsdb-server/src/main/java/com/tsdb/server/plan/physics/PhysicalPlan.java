@@ -19,6 +19,6 @@ import com.tsdb.tsfile.meta.MetaConstant;
 public interface PhysicalPlan {
     String getCatalog();
     String getSchema();
-    MetaConstant.OBJECT getObject();
+    MetaConstant.ObjectType getObject();
 
 }

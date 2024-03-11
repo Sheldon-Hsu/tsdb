@@ -14,5 +14,22 @@
 
 package com.tsdb.server.memory;
 
-public class WMenStore implements IWMemStore{
+import com.tsdb.server.plan.physics.InsertRowPlan;
+import com.tsdb.server.plan.physics.InsertRowsPlan;
+
+public class WMemStore implements IWMemStore{
+    @Override
+    public void insert(InsertRowPlan insertRowPlan) {
+
+    }
+
+    @Override
+    public void insert(InsertRowsPlan insertRowsPlan) {
+
+    }
+
+    @Override
+    public long getMemSize() {
+        return 0;
+    }
 }

@@ -19,42 +19,49 @@ import com.tsdb.common.config.TSDBConfig;
 import com.tsdb.common.config.TSDBDescriptor;
 import com.tsdb.server.exception.WriteProcessException;
 import com.tsdb.server.memory.IWMemStore;
-import com.tsdb.server.memory.WMenStore;
+import com.tsdb.server.memory.WMemStore;
+import com.tsdb.server.storage.processor.TsFileProcessor;
+import com.tsdb.tsfile.meta.MetaConstant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 public class WMSManager {
-    private static final TSDBConfig config =  TSDBDescriptor.getInstance().getConfig();
+    private static final TSDBConfig config = TSDBDescriptor.getInstance().getConfig();
     private static final Logger logger = LoggerFactory.getLogger(WMSManager.class);
     private int currentMemStoreNumber = 0;
     private static final int WAIT_TIME = 100;
+    private final Map<String, Map<MetaConstant.ObjectType, TsFileProcessor>> cache = new ConcurrentHashMap<>();
 
-    public TsFileProcessor getProcessor(){
-
-        return new TsFileProcessor();
+    //    todo 分为表和view两类
+    public TsFileProcessor getProcessor(String catalog, MetaConstant.ObjectType type, String name) {
+        TsFileProcessor processor = cache.get(catalog).get(type);
+        return processor;
     }
 
 
-    public synchronized IWMemStore getAvailableMemStore(String catalog,String schema,String table) throws WriteProcessException {
-        if (!reachMaxMemStoreNumber()){
+    public synchronized IWMemStore getAvailableMemStore(String catalog, String schema, String table) throws WriteProcessException {
+        if (!reachMaxMemStoreNumber()) {
             addMemStoreNumber();
-            return new WMenStore();
+            return new WMemStore();
         }
         int waitCount = 1;
-        while (true){
+        while (true) {
             if (!reachMaxMemStoreNumber()) {
                 addMemStoreNumber();
-                return new WMenStore();
+                return new WMemStore();
             }
             try {
                 wait(WAIT_TIME);
             } catch (InterruptedException e) {
-                logger.error("{}.{}.{} fails to wait for memstore {}, continue to wait", catalog, schema,table,e);
+                logger.error("{}.{}.{} fails to wait for memstore {}, continue to wait", catalog, schema, table, e);
                 Thread.currentThread().interrupt();
                 throw new WriteProcessException(e);
             }
             if (waitCount++ % 10 == 0) {
-                logger.info("{}.{}.{} has waited for a memtable for {}ms", catalog, schema,table, waitCount * WAIT_TIME);
+                logger.info("{}.{}.{} has waited for a memtable for {}ms", catalog, schema, table, waitCount * WAIT_TIME);
             }
         }
     }
@@ -77,6 +84,7 @@ public class WMSManager {
     public static WMSManager getInstance() {
         return WmsManagerHolder.INSTANCE;
     }
+
     private static class WmsManagerHolder {
 
         private WmsManagerHolder() {
