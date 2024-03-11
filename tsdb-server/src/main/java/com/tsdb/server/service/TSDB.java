@@ -14,20 +14,43 @@
 
 package com.tsdb.server.service;
 
+import com.tsdb.common.config.TSDBConstant;
+import com.tsdb.server.exception.service.StartupException;
+import com.tsdb.server.flush.FlushManager;
+import com.tsdb.server.storage.StorageEngine;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class TSDB {
+    private static final Logger logger = LoggerFactory.getLogger(TSDB.class);
+    private static final ServiceRegister register = new ServiceRegister();
+
+    public static void main(String[] args) {
+
+        try {
+            TSDB tsdb = TSDB.getInstance();
+            tsdb.setUp();
+        } catch (StartupException e) {
+            logger.error("start error:", e);
+            logger.error("{} exit", TSDBConstant.GLOBAL_DB_NAME);
+        }
+    }
 
 
-
-
-
+    private void setUp() throws StartupException {
+        register.register(StorageEngine.getInstance());
+        register.register(FlushManager.getInstance());
+    }
 
     public static TSDB getInstance() {
         return TSDBHolder.INSTANCE;
     }
+
     private static class TSDBHolder {
 
         private static final TSDB INSTANCE = new TSDB();
 
-        private TSDBHolder() {}
+        private TSDBHolder() {
+        }
     }
 }

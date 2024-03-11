@@ -18,6 +18,8 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
 public class TSDBConstant {
+
+    public static final String GLOBAL_DB_NAME = "TSDB";
     public static final Charset STRING_CHARSET = StandardCharsets.UTF_8;
 
     public static final int OBJECT_HEADER_SIZE = System.getProperty("java.vm.compressedOopsMode") == null ? 16 : 12;

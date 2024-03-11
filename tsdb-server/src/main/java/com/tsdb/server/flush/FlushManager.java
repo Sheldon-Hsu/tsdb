@@ -31,8 +31,13 @@ package com.tsdb.server.flush;
 import com.tsdb.server.concurrent.threadpool.FlushTaskPoolManager;
 import com.tsdb.server.memory.IWMemStore;
 import com.tsdb.server.service.IService;
+import com.tsdb.server.service.ServiceID;
+import com.tsdb.server.storage.StorageEngine;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class FlushManager implements IService {
+    private static final Logger logger = LoggerFactory.getLogger(FlushManager.class);
     private static final FlushTaskPoolManager taskPoolManager = FlushTaskPoolManager.getInstance();
 
     public void addToFlush(IWMemStore wMemStore){
@@ -42,22 +47,23 @@ public class FlushManager implements IService {
 
     @Override
     public void start() {
-
+        logger.info("FlushManager start...");
     }
 
     @Override
     public void stop() {
-
+        logger.info("FlushManager stop...");
     }
 
-    @Override
-    public void shutdown() {
-
-    }
 
     @Override
     public void shutdownNow() {
 
+    }
+
+    @Override
+    public ServiceID getServiceID() {
+        return ServiceID.FLUSH_SERVICE;
     }
 
     private FlushManager() {}

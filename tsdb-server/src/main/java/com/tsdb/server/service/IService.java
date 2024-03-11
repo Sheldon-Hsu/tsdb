@@ -17,9 +17,15 @@ package com.tsdb.server.service;
 public interface IService {
     void start() ;
 
+    /**
+     * Stop accepting tasks. The tasks in the queue are closed after completion
+     */
     void stop();
 
-    void shutdown();
-
+    /**
+     * Stop accepting tasks, empty the tasks in the queue, and close the running tasks when they are completed
+     */
     void shutdownNow();
+
+    ServiceID getServiceID();
 }

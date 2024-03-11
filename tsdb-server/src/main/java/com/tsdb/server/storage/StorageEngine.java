@@ -15,21 +15,19 @@
 package com.tsdb.server.storage;
 
 import com.tsdb.server.exception.InsertObjectTypeException;
-import com.tsdb.server.exception.TSDBException;
 import com.tsdb.server.exception.WriteProcessException;
 import com.tsdb.server.flush.FlushManager;
 import com.tsdb.server.plan.physics.InsertRowPlan;
 import com.tsdb.server.plan.physics.InsertRowsPlan;
 import com.tsdb.server.plan.physics.PhysicalPlan;
 import com.tsdb.server.service.IService;
+import com.tsdb.server.service.ServiceID;
 import com.tsdb.server.storage.processor.Processor;
-import com.tsdb.server.storage.processor.TsFileProcessor;
 import com.tsdb.server.storage.processor.ViewProcessor;
 import com.tsdb.tsfile.meta.MetaConstant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.IllegalFormatCodePointException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -98,21 +96,36 @@ public class StorageEngine implements IService {
 
     @Override
     public void start() {
-
+        logger.info("StorageEngine start...");
     }
 
     @Override
     public void stop() {
-
+        logger.info("StorageEngine stop...");
     }
 
-    @Override
-    public void shutdown() {
-
-    }
 
     @Override
     public void shutdownNow() {
 
     }
+
+    @Override
+    public ServiceID getServiceID() {
+        return ServiceID.STORAGE_ENGINE_SERVICE;
+    }
+
+
+    public static StorageEngine getInstance() {
+        return InstanceHolder.INSTANCE;
+    }
+
+    static class InstanceHolder {
+
+        private static final StorageEngine INSTANCE = new StorageEngine();
+
+        private InstanceHolder() {
+        }
+    }
+
 }
