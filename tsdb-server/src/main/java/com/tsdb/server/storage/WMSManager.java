@@ -31,11 +31,10 @@ import java.util.concurrent.ConcurrentHashMap;
 public class WMSManager {
     private static final TSDBConfig config = TSDBDescriptor.getInstance().getConfig();
     private static final Logger logger = LoggerFactory.getLogger(WMSManager.class);
-    private int currentMemStoreNumber = 0;
+    private int currentMemStoreNumber = 0; 
     private static final int WAIT_TIME = 100;
     private final Map<String, Map<MetaConstant.ObjectType, TsFileProcessor>> cache = new ConcurrentHashMap<>();
 
-    //    todo 分为表和view两类
     public TsFileProcessor getProcessor(String catalog, MetaConstant.ObjectType type, String name) {
         TsFileProcessor processor = cache.get(catalog).get(type);
         return processor;

@@ -20,6 +20,12 @@ public class TSDBConfig {
     private long workMemSize = 0L;
     private int longestFlushTime = 0;
 
+    /** How many threads can concurrently flush. When <= 0, use CPU core number. */
+    private int concurrentFlushThread = Runtime.getRuntime().availableProcessors();
+    private int flushQueueSize = 10;
+
+
+
 
     public int getLongestFlushTime() {
         return longestFlushTime;
@@ -43,5 +49,21 @@ public class TSDBConfig {
 
     public void setMaxMemStoreNumber(int maxMemStoreNumber) {
         this.maxMemStoreNumber = maxMemStoreNumber;
+    }
+
+    public int getConcurrentFlushThread() {
+        return concurrentFlushThread;
+    }
+
+    public void setConcurrentFlushThread(int concurrentFlushThread) {
+        this.concurrentFlushThread = concurrentFlushThread;
+    }
+
+    public int getFlushQueueSize() {
+        return flushQueueSize;
+    }
+
+    public void setFlushQueueSize(int flushQueueSize) {
+        this.flushQueueSize = flushQueueSize;
     }
 }

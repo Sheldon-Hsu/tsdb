@@ -12,27 +12,26 @@
  * limitations under the License.
  */
 
-package com.tsdb.server.memory;
+package com.tsdb.server.flush;
 
-import com.tsdb.server.plan.physics.InsertRowPlan;
-import com.tsdb.server.plan.physics.InsertRowsPlan;
+import com.tsdb.server.memory.IWMemStore;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public class WMemStore implements IWMemStore{
+public class FlushMemStoreTask implements Runnable {
+    private static final Logger LOGGER = LoggerFactory.getLogger(FlushMemStoreTask.class);
 
+    private IWMemStore wMemStore;
 
-
-    @Override
-    public void insert(InsertRowPlan insertRowPlan) {
-
+    public FlushMemStoreTask(IWMemStore wMemStore) {
+        this.wMemStore = wMemStore;
     }
 
-    @Override
-    public void insert(InsertRowsPlan insertRowsPlan) {
 
-    }
+
 
     @Override
-    public long getMemSize() {
-        return 0;
+    public void run() {
+
     }
 }

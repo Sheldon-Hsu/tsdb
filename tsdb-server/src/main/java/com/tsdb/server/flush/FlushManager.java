@@ -28,13 +28,16 @@
 
 package com.tsdb.server.flush;
 
+import com.tsdb.server.concurrent.threadpool.FlushTaskPoolManager;
 import com.tsdb.server.memory.IWMemStore;
 import com.tsdb.server.service.IService;
 
 public class FlushManager implements IService {
+    private static final FlushTaskPoolManager taskPoolManager = FlushTaskPoolManager.getInstance();
 
     public void addToFlush(IWMemStore wMemStore){
-
+        FlushMemStoreTask flushMemStoreTask = new FlushMemStoreTask(wMemStore);
+        taskPoolManager.submit(flushMemStoreTask);
     }
 
     @Override

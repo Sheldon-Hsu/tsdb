@@ -14,22 +14,31 @@
 
 package com.tsdb.server.storage;
 
+import com.tsdb.server.exception.InsertObjectTypeException;
+import com.tsdb.server.exception.TSDBException;
 import com.tsdb.server.exception.WriteProcessException;
 import com.tsdb.server.flush.FlushManager;
 import com.tsdb.server.plan.physics.InsertRowPlan;
 import com.tsdb.server.plan.physics.InsertRowsPlan;
 import com.tsdb.server.plan.physics.PhysicalPlan;
 import com.tsdb.server.service.IService;
+import com.tsdb.server.storage.processor.Processor;
 import com.tsdb.server.storage.processor.TsFileProcessor;
+import com.tsdb.server.storage.processor.ViewProcessor;
 import com.tsdb.tsfile.meta.MetaConstant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.IllegalFormatCodePointException;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class StorageEngine implements IService {
     private static final Logger logger = LoggerFactory.getLogger(StorageEngine.class);
 
     private FlushManager flushManager = FlushManager.getInstance();
     private WMSManager wmsmanager = WMSManager.getInstance();
+    private Map<String, ViewProcessor> view = new ConcurrentHashMap<>();
 
     /**
      * Write a piece of data. Data is not written to the disk for the time being.
@@ -38,7 +47,7 @@ public class StorageEngine implements IService {
      *
      * @param insertPlan
      */
-    public void insert(InsertRowPlan insertPlan) throws WriteProcessException {
+    public void insert(InsertRowPlan insertPlan) throws WriteProcessException, InsertObjectTypeException {
         logger.info("StorageEngine insert data...");
         String catalog = insertPlan.getCatalog();
         MetaConstant.ObjectType type = insertPlan.getObject();
@@ -51,11 +60,11 @@ public class StorageEngine implements IService {
                 name = insertPlan.getView();
                 break;
             default:
-                throw new RuntimeException();
+                throw new InsertObjectTypeException(String.format("object type: %s does not support writing",type));
 
         }
-        TsFileProcessor tsFileProcessor = getProcessor(catalog, type, name);
-        tsFileProcessor.insert(insertPlan);
+        Processor processor = getProcessor(catalog, type, name);
+        processor.insert(insertPlan);
     }
 
     public void batchInsert(InsertRowsPlan insertPlan) {
@@ -69,8 +78,21 @@ public class StorageEngine implements IService {
     }
 
 
-    public TsFileProcessor getProcessor(String catalog, MetaConstant.ObjectType type, String name) {
-        return wmsmanager.getProcessor(catalog, type, name);
+    public Processor getProcessor(String catalog, MetaConstant.ObjectType type, String name) throws WriteProcessException {
+        switch (type){
+            case TABLE:
+                return wmsmanager.getProcessor(catalog, type, name);
+            case VIEW:
+                String key = catalog+"."+name;
+                if (view.containsKey(key)){
+                    return view.get(key);
+                }else {
+                   return view.put(key,new ViewProcessor());
+                }
+            default:
+                throw new WriteProcessException(String.format("no processor for object type: %s",type));
+        }
+
     }
 
 

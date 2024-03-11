@@ -51,42 +51,37 @@ public class TsFileProcessor implements Processor {
      *
      * @param insertRowPlan
      */
+    @Override
     public void insert(InsertRowPlan insertRowPlan) throws WriteProcessException {
         if (workMemStore == null) {
             workMemStore = new WMemStore();
         }
         String catalog = insertRowPlan.getCatalog();
         String schema = insertRowPlan.getSchema();
-        MetaConstant.ObjectType obj = insertRowPlan.getObject();
-        if (MetaConstant.ObjectType.TABLE.equals(obj)) {
-            String table = insertRowPlan.getTable();
-            workMemStore = workMemManager.getAvailableMemStore(catalog, schema, table);
-        } else if (MetaConstant.ObjectType.VIEW.equals(obj)) {
-            String view = insertRowPlan.getView();
-            workMemStore = workMemManager.getAvailableMemStore(catalog, schema, view);
-        } else {
-            throw new WriteProcessException("");
-        }
+        String table = insertRowPlan.getTable();
+        workMemStore = workMemManager.getAvailableMemStore(catalog, schema, table);
+        rwLock.writeLock().lock();
         workMemStore.insert(insertRowPlan);
+        rwLock.writeLock().unlock();
         wMemStoreLastUpdateTime = System.currentTimeMillis();
         tryFlush();
     }
 
 
     private void tryFlush() {
-        if (workMemStore.getMemSize() > config.getWorkMemSize()|| distanceFromLastUpdate() > config.getLongestFlushTime() ) {
+        if (workMemStore.getMemSize() > config.getWorkMemSize() || distanceFromLastUpdate() > config.getLongestFlushTime()) {
             flush();
         }
     }
 
-    private void flush(){
+    private void flush() {
         rwLock.writeLock().lock();
         flushManager.addToFlush(workMemStore);
         workMemStore = new WMemStore();
         rwLock.writeLock().unlock();
     }
 
-    private long distanceFromLastUpdate(){
+    private long distanceFromLastUpdate() {
         return System.currentTimeMillis() - wMemStoreLastUpdateTime;
     }
 }
