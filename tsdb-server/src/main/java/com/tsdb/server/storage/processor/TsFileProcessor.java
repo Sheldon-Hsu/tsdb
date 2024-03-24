@@ -49,6 +49,9 @@ public class TsFileProcessor implements Processor {
     /**
      * Data is written to memory
      *
+     private TsFileResource tsFileResource;
+     private IChunkWriter writer;
+     private IWMemStore workMemStore;
      * @param insertRowPlan
      */
     @Override

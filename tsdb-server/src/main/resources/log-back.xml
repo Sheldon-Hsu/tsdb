@@ -264,12 +264,9 @@
         <appender-ref ref="stdout"/>
     </root>
     <logger level="OFF" name="io.moquette.broker.metrics.MQTTMessageLogger"/>
-    <logger level="info" name="org.apache.iotdb.db.service"/>
-    <logger level="info" name="org.apache.iotdb.db.conf"/>
-    <logger level="info" name="org.apache.iotdb.db.cost.statistic">
-        <appender-ref ref="FILE_COST_MEASURE"/>
-    </logger>
-    <logger level="info" name="IoTDB_AUDIT_LOGGER">
+    <logger level="OFF" name="ch.qos.logback"/>
+
+    <logger level="info" name="TSDB_AUDIT_LOGGER">
         <appender-ref ref="AUDIT"/>
     </logger>
     <logger level="info" name="QUERY_DEBUG">
