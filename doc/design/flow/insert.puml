@@ -1,0 +1,44 @@
+@startuml
+|client|
+start
+:Client insert data;
+|#AntiqueWhite|services|
+:Service accept request;
+:SQLGenerator parse request to operater;
+:Planner parse operater to physical plan;
+|paln executer|
+:PlanExecuter execute plan;
+|invert index|
+if(tags exist?) then(yes)
+    :return id;
+else(no)
+    :create id;
+endif
+|storageEngine|
+:StorageEngine find region by table info;
+fork
+    :RegionProcessor find tsfile processor by id hash;
+    fork
+        :WAL;
+    fork again
+
+        :TSFileProcessor;
+        :WorkMemStore;
+        if(flush?) then
+            :add to flush list;
+            :new workMemStore;
+            :async flush;
+        else
+        endif
+
+    end fork
+fork again
+    :find last data cache by id hash;
+    : write to cache;
+end fork
+|services|
+:service;
+|client|
+:client;
+end
+@enduml
