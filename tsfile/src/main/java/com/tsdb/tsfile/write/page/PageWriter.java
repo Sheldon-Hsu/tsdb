@@ -25,7 +25,7 @@ import com.tsdb.tsfile.exception.write.DataNotMatchException;
 import com.tsdb.tsfile.file.header.statistics.FileStatistics;
 import com.tsdb.tsfile.file.header.statistics.PageStatistics;
 import com.tsdb.tsfile.memory.TVList;
-import com.tsdb.tsfile.meta.Schema;
+import com.tsdb.tsfile.meta.Table;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,11 +50,11 @@ public class PageWriter {
     private DataType[] dataTypes;
 
 
-    public PageWriter(Schema schema) {
-        dataTypes = schema.getDataTypesOrdered();
-        compressor = ICompressor.getCompressor(schema.getCompressionType());
+    public PageWriter(Table table) {
+        dataTypes = table.getDataTypesOrdered();
+        compressor = ICompressor.getCompressor(table.getCompressionType());
         int columnSize = dataTypes.length;
-        Map<DataType, TSEncoding> encoderMap = schema.getEncoders();
+        Map<DataType, TSEncoding> encoderMap = table.getEncoders();
         valueEncoders = new Encoder[columnSize];
         for (int i = 0; i < columnSize; i++) {
             DataType dataType = dataTypes[i];

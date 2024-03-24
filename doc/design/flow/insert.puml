@@ -15,9 +15,9 @@ else(no)
     :create id;
 endif
 |storageEngine|
-:StorageEngine find region by table info;
-fork
-    :RegionProcessor find tsfile processor by id hash;
+:StorageEngine find region servers by table info;
+:StorageEngine find region by id hash;
+:RegionProcessor insert;
     fork
         :WAL;
     fork again
@@ -30,12 +30,10 @@ fork
             :async flush;
         else
         endif
-
+    fork again
+        :find last data cache by id hash;
+        : write to cache;
     end fork
-fork again
-    :find last data cache by id hash;
-    : write to cache;
-end fork
 |services|
 :service;
 |client|

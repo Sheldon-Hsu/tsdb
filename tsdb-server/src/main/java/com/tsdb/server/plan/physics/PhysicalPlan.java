@@ -15,10 +15,13 @@
 package com.tsdb.server.plan.physics;
 
 import com.tsdb.tsfile.meta.MetaConstant;
+import com.tsdb.tsfile.meta.TableInfo;
 
 public interface PhysicalPlan {
     String getCatalog();
     String getSchema();
+    String getTable();
+    TableInfo getTableInfo();
     MetaConstant.ObjectType getObject();
 
 }

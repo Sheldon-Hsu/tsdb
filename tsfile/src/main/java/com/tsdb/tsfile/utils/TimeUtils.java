@@ -12,20 +12,10 @@
  * limitations under the License.
  */
 
-package com.tsdb.tsfile.meta;
+package com.tsdb.tsfile.utils;
 
-public class MetaConstant {
-    public static final String TABLE="TABLE";
-    public static final String DEFAULT_SCHEMA="public";
-
-
-
-
-    public enum ObjectType {
-        TABLE,
-        INDEX,
-        VIEW,
-        FUNCTION,
-        OTHER
+public class TimeUtils {
+    public static long currentTime() {
+        return System.currentTimeMillis();
     }
 }

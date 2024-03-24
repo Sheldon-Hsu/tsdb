@@ -14,7 +14,7 @@
 
 package com.tsdb.server.exception.service;
 
-import com.tsdb.server.exception.TSDBException;
+import com.tsdb.common.exception.TSDBException;
 
 public class StartupException extends TSDBException {
     private static final long serialVersionUID = -497368726126559138L;

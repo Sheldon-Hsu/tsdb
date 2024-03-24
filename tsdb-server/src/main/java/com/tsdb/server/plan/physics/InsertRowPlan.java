@@ -15,11 +15,35 @@
 package com.tsdb.server.plan.physics;
 
 import com.tsdb.tsfile.meta.MetaConstant;
+import com.tsdb.tsfile.meta.TableInfo;
 
 public class InsertRowPlan implements PhysicalPlan{
+    private TableInfo tableInfo ;
+    private long time;
+    private int id;
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public long getTime() {
+        return time;
+    }
+
+    public void setTime(long time) {
+        this.time = time;
+    }
 
     public String getTable(){
+        return tableInfo.getTable();
+    }
+
+    @Override
+    public TableInfo getTableInfo() {
         return null;
     }
 
@@ -29,12 +53,12 @@ public class InsertRowPlan implements PhysicalPlan{
 
     @Override
     public String getCatalog() {
-        return null;
+        return tableInfo.getCatalog();
     }
 
     @Override
     public String getSchema() {
-        return null;
+        return tableInfo.getSchema();
     }
 
     @Override

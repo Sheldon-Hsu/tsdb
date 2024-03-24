@@ -18,7 +18,7 @@ import com.tsdb.common.data.DataType;
 import com.tsdb.tsfile.encoding.TSEncoding;
 import com.tsdb.tsfile.memory.AlignedTVList;
 import com.tsdb.tsfile.memory.TVList;
-import com.tsdb.tsfile.meta.Schema;
+import com.tsdb.tsfile.meta.Table;
 import org.junit.jupiter.api.*;
 
 import java.util.ArrayList;
@@ -27,7 +27,6 @@ import java.util.List;
 import java.util.Map;
 
 import static com.tsdb.common.data.DataType.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class PageWriterTest {
@@ -36,21 +35,21 @@ class PageWriterTest {
     DataType[] dataType = new DataType[]{INTEGER, BIGINT, FLOAT, DOUBLE, VARCHAR};
     long startTime = 10000;
     TVList tvList;
-    Schema schema;
+    Table table;
     PageWriter pageWriter;
     long[] timestamps = new long[dataSize];
     List<Object[]> lineValue = new ArrayList<>();
 
     @BeforeAll
     void init() {
-        schema = new Schema();
-        schema.setDataTypes(dataType);
+        table = new Table();
+        table.setDataTypes(dataType);
         Map<DataType, TSEncoding> encoder = new HashMap<>();
         for (DataType type : dataType) {
             encoder.put(type, TSEncoding.PLAIN);
         }
-        schema.setEncoder(encoder);
-        pageWriter = new PageWriter(schema);
+        table.setEncoder(encoder);
+        pageWriter = new PageWriter(table);
         tvList = new AlignedTVList(dataType);
         for (int lineIndex = 0; lineIndex < dataSize; lineIndex++) {
             timestamps[lineIndex] = startTime + lineIndex + 1;

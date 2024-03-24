@@ -14,7 +14,7 @@
 
 package com.tsdb.tsfile.write.chunk;
 
-import com.tsdb.tsfile.meta.Schema;
+import com.tsdb.tsfile.meta.Table;
 import com.tsdb.tsfile.write.page.PageWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,8 +28,8 @@ public class AlignedChunkWriterImpl implements IChunkWriter {
     private static final Logger logger = LoggerFactory.getLogger(AlignedChunkWriterImpl.class);
     private PageWriter pageWriter;
 
-    AlignedChunkWriterImpl(Schema schema){
-        this.pageWriter = new PageWriter(schema);
+    AlignedChunkWriterImpl(Table table){
+        this.pageWriter = new PageWriter(table);
     }
 
     @Override

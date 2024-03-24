@@ -22,12 +22,13 @@ import com.tsdb.server.plan.physics.InsertRowsPlan;
 import com.tsdb.server.plan.physics.PhysicalPlan;
 import com.tsdb.server.service.IService;
 import com.tsdb.server.service.ServiceID;
-import com.tsdb.server.storage.processor.Processor;
-import com.tsdb.server.storage.processor.ViewProcessor;
-import com.tsdb.tsfile.meta.MetaConstant;
+import com.tsdb.server.storage.processor.RegionProcessor;
+import com.tsdb.tsfile.exception.write.DiskSpaceInsufficientException;
+import com.tsdb.tsfile.meta.TableInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -36,8 +37,9 @@ public class StorageEngine implements IService {
 
     private FlushManager flushManager = FlushManager.getInstance();
     private WMSManager wmsmanager = WMSManager.getInstance();
-    private Map<String, ViewProcessor> view = new ConcurrentHashMap<>();
 
+    private Map<TableInfo, RegionProcessor> processorMap = new ConcurrentHashMap<>();
+    private static long timePartitionInterval = -1;
     /**
      * Write a piece of data. Data is not written to the disk for the time being.
      * It is stored in memory until the appropriate time is reached before it is written to the file.
@@ -45,23 +47,10 @@ public class StorageEngine implements IService {
      *
      * @param insertPlan
      */
-    public void insert(InsertRowPlan insertPlan) throws WriteProcessException, InsertObjectTypeException {
+    public void insert(InsertRowPlan insertPlan) throws WriteProcessException, InsertObjectTypeException, IOException, DiskSpaceInsufficientException {
         logger.info("StorageEngine insert data...");
-        String catalog = insertPlan.getCatalog();
-        MetaConstant.ObjectType type = insertPlan.getObject();
-        String name;
-        switch (type) {
-            case TABLE:
-                name = insertPlan.getTable();
-                break;
-            case VIEW:
-                name = insertPlan.getView();
-                break;
-            default:
-                throw new InsertObjectTypeException(String.format("object type: %s does not support writing",type));
-
-        }
-        Processor processor = getProcessor(catalog, type, name);
+        TableInfo table = insertPlan.getTableInfo();
+        RegionProcessor processor = getProcessor(table);
         processor.insert(insertPlan);
     }
 
@@ -76,20 +65,16 @@ public class StorageEngine implements IService {
     }
 
 
-    public Processor getProcessor(String catalog, MetaConstant.ObjectType type, String name) throws WriteProcessException {
-        switch (type){
-            case TABLE:
-                return wmsmanager.getProcessor(catalog, type, name);
-            case VIEW:
-                String key = catalog+"."+name;
-                if (view.containsKey(key)){
-                    return view.get(key);
-                }else {
-                   return view.put(key,new ViewProcessor());
-                }
-            default:
-                throw new WriteProcessException(String.format("no processor for object type: %s",type));
-        }
+    private RegionProcessor getProcessor(TableInfo tableInfo) {
+        return processorMap.get(tableInfo);
+    }
+
+
+    public static long getTimePartition(long time) {
+        return  time / timePartitionInterval ;
+    }
+
+    private static void initTimePartition() {
 
     }
 
@@ -97,6 +82,7 @@ public class StorageEngine implements IService {
     @Override
     public void start() {
         logger.info("StorageEngine start...");
+        initTimePartition();
     }
 
     @Override

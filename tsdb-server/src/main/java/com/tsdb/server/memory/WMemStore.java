@@ -16,19 +16,22 @@ package com.tsdb.server.memory;
 
 import com.tsdb.server.plan.physics.InsertRowPlan;
 import com.tsdb.server.plan.physics.InsertRowsPlan;
+import com.tsdb.server.storage.StorageEngine;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class WMemStore implements IWMemStore{
-
+    private static final Logger logger = LoggerFactory.getLogger(WMemStore.class);
 
 
     @Override
     public void insert(InsertRowPlan insertRowPlan) {
-
+        logger.info("WMemStore insert data...");
     }
 
     @Override
     public void insert(InsertRowsPlan insertRowsPlan) {
-
+        logger.info("WMemStore insert datas...");
     }
 
     @Override

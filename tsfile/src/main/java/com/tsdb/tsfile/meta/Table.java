@@ -22,7 +22,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Schema implements Serializable {
+public class Table implements Serializable {
     private static final long serialVersionUID = 2103464296109291362L;
     private DataType[] dataTypes ;
     private CompressionType compressionType;

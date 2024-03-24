@@ -16,6 +16,7 @@ package com.tsdb.server.exception;
 
 
 import com.tsdb.rpc.TSStatusCode;
+import com.tsdb.common.exception.TSDBException;
 
 public class WriteProcessException extends TSDBException {
 

@@ -20,7 +20,7 @@ package com.tsdb.server.exception.service;
 
 
 import com.tsdb.rpc.TSStatusCode;
-import com.tsdb.server.exception.TSDBException;
+import com.tsdb.common.exception.TSDBException;
 
 public class ShutdownException extends TSDBException {
 

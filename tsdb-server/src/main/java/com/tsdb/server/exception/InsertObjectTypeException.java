@@ -15,8 +15,9 @@
 package com.tsdb.server.exception;
 
 import com.tsdb.rpc.TSStatusCode;
+import com.tsdb.common.exception.TSDBException;
 
-public class InsertObjectTypeException extends TSDBException{
+public class InsertObjectTypeException extends TSDBException {
     private static final long serialVersionUID = -5610569680324080308L;
 
     public InsertObjectTypeException(String message) {

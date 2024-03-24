@@ -87,4 +87,12 @@ public class TsFileProcessor implements Processor {
     private long distanceFromLastUpdate() {
         return System.currentTimeMillis() - wMemStoreLastUpdateTime;
     }
+
+    public TsFileResource getTsFileResource() {
+        return tsFileResource;
+    }
+
+    public void setTsFileResource(TsFileResource tsFileResource) {
+        this.tsFileResource = tsFileResource;
+    }
 }

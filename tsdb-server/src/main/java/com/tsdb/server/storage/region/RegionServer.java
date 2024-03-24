@@ -12,20 +12,30 @@
  * limitations under the License.
  */
 
-package com.tsdb.tsfile.meta;
+package com.tsdb.server.storage.region;
 
-public class MetaConstant {
-    public static final String TABLE="TABLE";
-    public static final String DEFAULT_SCHEMA="public";
+import com.tsdb.server.service.IService;
+import com.tsdb.server.service.ServiceID;
 
+public class RegionServer implements IService {
 
+    @Override
+    public void start() {
 
+    }
 
-    public enum ObjectType {
-        TABLE,
-        INDEX,
-        VIEW,
-        FUNCTION,
-        OTHER
+    @Override
+    public void stop() {
+
+    }
+
+    @Override
+    public void shutdownNow() {
+
+    }
+
+    @Override
+    public ServiceID getServiceID() {
+        return null;
     }
 }

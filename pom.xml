@@ -52,6 +52,7 @@
         <xz.version>1.9</xz.version>
         <junit.version>5.10.0</junit.version>
         <junit.platform.version>1.10.0</junit.platform.version>
+        <hutool.version>5.8.25</hutool.version>
     </properties>
 
     <profiles>
@@ -112,7 +113,13 @@
                 <version>${project.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool.version}</version>
+            </dependency>
 
+            <!--            log start-->
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
@@ -130,7 +137,7 @@
                 <artifactId>logback-classic</artifactId>
                 <version>${logback.version}</version>
             </dependency>
-
+            <!--            log end-->
             <!--      compress dependency start-->
             <dependency>
                 <groupId>org.xerial.snappy</groupId>

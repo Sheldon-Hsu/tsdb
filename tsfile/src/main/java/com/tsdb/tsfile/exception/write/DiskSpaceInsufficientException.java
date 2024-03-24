@@ -11,21 +11,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package com.tsdb.tsfile.meta;
-
-public class MetaConstant {
-    public static final String TABLE="TABLE";
-    public static final String DEFAULT_SCHEMA="public";
+package com.tsdb.tsfile.exception.write;
 
 
 
+import com.tsdb.common.exception.TSDBException;
+import com.tsdb.rpc.TSStatusCode;
 
-    public enum ObjectType {
-        TABLE,
-        INDEX,
-        VIEW,
-        FUNCTION,
-        OTHER
-    }
+import java.util.List;
+
+public class DiskSpaceInsufficientException extends TSDBException {
+
+
+  private static final long serialVersionUID = 7926398443166818024L;
+
+  public DiskSpaceInsufficientException(List<String> folders) {
+    super(
+        String.format("Can't get next folder from [%s], because they are all full.", folders),
+        TSStatusCode.DISK_SPACE_INSUFFICIENT_ERROR.getStatusCode());
+  }
 }
