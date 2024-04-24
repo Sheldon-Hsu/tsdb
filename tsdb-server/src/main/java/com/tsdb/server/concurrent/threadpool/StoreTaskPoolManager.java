@@ -11,53 +11,47 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.tsdb.server.concurrent.threadpool;
 
 import com.tsdb.common.config.TSDBConfig;
 import com.tsdb.common.config.TSDBDescriptor;
-
 import com.tsdb.server.concurrent.ThreadName;
 import com.tsdb.server.concurrent.ThreadPoolFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class FlushTaskPoolManager extends AbstractPoolManager {
+public class StoreTaskPoolManager extends AbstractPoolManager{
     private final TSDBConfig config = TSDBDescriptor.getInstance().getConfig();
+    private static final Logger LOGGER = LoggerFactory.getLogger(StoreTaskPoolManager.class);
 
-    private static final Logger logger = LoggerFactory.getLogger(FlushTaskPoolManager.class);
-
-    private FlushTaskPoolManager() {
+    private StoreTaskPoolManager() {
     }
 
-    public static FlushTaskPoolManager getInstance() {
-        return InstanceHolder.instance;
+    public static StoreTaskPoolManager getInstance() {
+        return StoreTaskPoolManager.InstanceHolder.instance;
     }
-
     @Override
     public Logger getLogger() {
-        return logger;
-    }
-
-    @Override
-    public String getName() {
-        return "flush task";
+        return null;
     }
 
     @Override
     public void start() {
         if (pool == null) {
-            int queueSize = config.getFlushQueueSize();
-            int threadCnt = config.getConcurrentFlushThread();
-            pool = ThreadPoolFactory.newFixedThreadPool(threadCnt, ThreadName.FLUSH_SERVICE.getName(),queueSize);
+            int queueSize = config.getWriteQueueSize();
+            int threadCnt = config.getWriteThreadSize();
+            pool = ThreadPoolFactory.newFixedThreadPool(threadCnt, ThreadName.STORE_SERVICE.getName(),queueSize);
         }
-        logger.info("Flush task manager started.");
+        pool.submit(()-> LOGGER.info("store task manager started."));
+
     }
 
     @Override
-    public void stop() {
-        super.stop();
-        logger.info("Flush task manager stopped");
+    public String getName() {
+        return null;
     }
+
 
     private static class InstanceHolder {
 
@@ -65,6 +59,6 @@ public class FlushTaskPoolManager extends AbstractPoolManager {
             // allowed to do nothing
         }
 
-        private static FlushTaskPoolManager instance = new FlushTaskPoolManager();
+        private static StoreTaskPoolManager instance = new StoreTaskPoolManager();
     }
 }

@@ -26,57 +26,53 @@
  * limitations under the License.
  */
 
-package com.tsdb.server.flush;
+package com.tsdb.server.concurrent.threadpool;
 
-import com.tsdb.server.concurrent.threadpool.FlushTaskPoolManager;
-import com.tsdb.server.memory.IWMemStore;
-import com.tsdb.server.service.IService;
-import com.tsdb.server.service.ServiceID;
+import com.tsdb.common.config.TSDBConfig;
+import com.tsdb.common.config.TSDBDescriptor;
+import com.tsdb.server.concurrent.ThreadName;
+import com.tsdb.server.concurrent.ThreadPoolFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class FlushManager implements IService {
-    private static final Logger logger = LoggerFactory.getLogger(FlushManager.class);
-    private static final FlushTaskPoolManager taskPoolManager = FlushTaskPoolManager.getInstance();
+public class QueryTaskPoolManager extends AbstractPoolManager {
+    private final TSDBConfig config = TSDBDescriptor.getInstance().getConfig();
+    private static final Logger LOGGER = LoggerFactory.getLogger(QueryTaskPoolManager.class);
 
-    public void addToFlush(IWMemStore wMemStore){
-        FlushMemStoreTask flushMemStoreTask = new FlushMemStoreTask(wMemStore);
-        taskPoolManager.submit(flushMemStoreTask);
+    private QueryTaskPoolManager() {
+    }
+
+    public static QueryTaskPoolManager getInstance() {
+        return QueryTaskPoolManager.InstanceHolder.instance;
+    }
+    @Override
+    public Logger getLogger() {
+        return LOGGER;
     }
 
     @Override
     public void start() {
-        logger.info("FlushManager start...");
-        taskPoolManager.start();
-    }
-
-    @Override
-    public void stop() {
-        logger.info("FlushManager stop...");
-        taskPoolManager.stop();
-    }
-
-
-    @Override
-    public void shutdownNow() {
+        if (pool == null) {
+            int queueSize = config.getQueryQueueSize();
+            int threadCnt = config.getQueryThreadSize();
+            pool = ThreadPoolFactory.newFixedThreadPool(threadCnt, ThreadName.QUERY_SERVICE.getName(),queueSize);
+        }
+        pool.submit(()-> LOGGER.info("query task manager started."));
 
     }
 
     @Override
-    public ServiceID getServiceID() {
-        return ServiceID.FLUSH_SERVICE;
+    public String getName() {
+        return null;
     }
 
-    private FlushManager() {}
-
-    public static FlushManager getInstance() {
-        return InstanceHolder.instance;
-    }
 
     private static class InstanceHolder {
 
-        private InstanceHolder() {}
+        private InstanceHolder() {
+            // allowed to do nothing
+        }
 
-        private static FlushManager instance = new FlushManager();
+        private static QueryTaskPoolManager instance = new QueryTaskPoolManager();
     }
 }

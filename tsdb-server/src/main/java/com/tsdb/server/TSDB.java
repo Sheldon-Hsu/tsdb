@@ -12,11 +12,13 @@
  * limitations under the License.
  */
 
-package com.tsdb.server.service;
+package com.tsdb.server;
 
 import com.tsdb.common.config.TSDBConstant;
 import com.tsdb.server.exception.service.StartupException;
 import com.tsdb.server.flush.FlushManager;
+import com.tsdb.server.query.QueryEngine;
+import com.tsdb.server.service.ServiceRegister;
 import com.tsdb.server.storage.StorageEngine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +35,7 @@ public class TSDB {
         } catch (StartupException e) {
             logger.error("start error:", e);
             logger.error("{} exit", TSDBConstant.GLOBAL_DB_NAME);
+            System.exit(1);
         }
     }
 
@@ -40,6 +43,7 @@ public class TSDB {
     private void setUp() throws StartupException {
         register.register(StorageEngine.getInstance());
         register.register(FlushManager.getInstance());
+        register.register(QueryEngine.getInstance());
     }
 
     public static TSDB getInstance() {

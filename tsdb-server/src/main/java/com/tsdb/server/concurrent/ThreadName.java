@@ -23,6 +23,7 @@ public enum ThreadName {
   RPC_CLIENT("RPC-Client"),
   MERGE_SERVICE("Merge"),
   FLUSH_SERVICE("Flush"),
+  STORE_SERVICE("Store"),
   QUERY_SERVICE("Query")
   ;
 

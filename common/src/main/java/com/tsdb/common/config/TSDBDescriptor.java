@@ -20,7 +20,7 @@ import org.slf4j.LoggerFactory;
 import java.util.Properties;
 
 public class TSDBDescriptor {
-    private static final Logger LOGGER = LoggerFactory.getLogger(TSDBDescriptor.class);
+    private static final Logger logger = LoggerFactory.getLogger(TSDBDescriptor.class);
 
     private final TSDBConfig conf = new TSDBConfig();
 

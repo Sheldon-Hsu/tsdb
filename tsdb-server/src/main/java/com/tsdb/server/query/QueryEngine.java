@@ -14,5 +14,46 @@
 
 package com.tsdb.server.query;
 
-public class QueryEngine {
+import com.tsdb.server.concurrent.threadpool.QueryTaskPoolManager;
+import com.tsdb.server.service.IService;
+import com.tsdb.server.service.ServiceID;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class QueryEngine implements IService {
+    private static final Logger logger = LoggerFactory.getLogger(QueryEngine.class);
+    private QueryTaskPoolManager pool = QueryTaskPoolManager.getInstance();
+
+
+    @Override
+    public void start() {
+        logger.info("StorageEngine start...");
+        pool.start();
+    }
+
+    @Override
+    public void stop() {
+        logger.info("QueryEngine stop...");
+    }
+
+    @Override
+    public void shutdownNow() {
+
+    }
+
+    @Override
+    public ServiceID getServiceID() {
+        return null;
+    }
+
+    public static QueryEngine getInstance() {
+        return QueryEngine.InstanceHolder.instance;
+    }
+
+    private static class InstanceHolder {
+
+        private InstanceHolder() {}
+
+        private static QueryEngine instance = new QueryEngine();
+    }
 }

@@ -14,6 +14,7 @@
 
 package com.tsdb.server.storage;
 
+import com.tsdb.server.concurrent.threadpool.StoreTaskPoolManager;
 import com.tsdb.server.exception.InsertObjectTypeException;
 import com.tsdb.server.exception.WriteProcessException;
 import com.tsdb.server.flush.FlushManager;
@@ -30,6 +31,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class StorageEngine implements IService {
@@ -40,6 +42,7 @@ public class StorageEngine implements IService {
 
     private Map<TableInfo, RegionProcessor> processorMap = new ConcurrentHashMap<>();
     private static long timePartitionInterval = -1;
+    private StoreTaskPoolManager pool = StoreTaskPoolManager.getInstance();
     /**
      * Write a piece of data. Data is not written to the disk for the time being.
      * It is stored in memory until the appropriate time is reached before it is written to the file.
@@ -82,6 +85,7 @@ public class StorageEngine implements IService {
     @Override
     public void start() {
         logger.info("StorageEngine start...");
+        pool.start();
         initTimePartition();
     }
 
@@ -114,4 +118,16 @@ public class StorageEngine implements IService {
         }
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        StorageEngine that = (StorageEngine) o;
+        return Objects.equals(flushManager, that.flushManager) && Objects.equals(wmsmanager, that.wmsmanager) && Objects.equals(processorMap, that.processorMap);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(flushManager, wmsmanager, processorMap);
+    }
 }

@@ -23,6 +23,10 @@ public class TSDBConfig {
     /** How many threads can concurrently flush. When <= 0, use CPU core number. */
     private int concurrentFlushThread = Runtime.getRuntime().availableProcessors();
     private int flushQueueSize = 10;
+    private int queryThreadSize = Runtime.getRuntime().availableProcessors();
+    private int queryQueueSize = 10;
+    private int writeThreadSize = Runtime.getRuntime().availableProcessors();
+    private int writeQueueSize = 10;
 
 
 
@@ -65,5 +69,37 @@ public class TSDBConfig {
 
     public void setFlushQueueSize(int flushQueueSize) {
         this.flushQueueSize = flushQueueSize;
+    }
+
+    public int getQueryThreadSize() {
+        return queryThreadSize;
+    }
+
+    public void setQueryThreadSize(int queryThreadSize) {
+        this.queryThreadSize = queryThreadSize;
+    }
+
+    public int getWriteThreadSize() {
+        return writeThreadSize;
+    }
+
+    public void setWriteThreadSize(int writeThreadSize) {
+        this.writeThreadSize = writeThreadSize;
+    }
+
+    public int getQueryQueueSize() {
+        return queryQueueSize;
+    }
+
+    public void setQueryQueueSize(int queryQueueSize) {
+        this.queryQueueSize = queryQueueSize;
+    }
+
+    public int getWriteQueueSize() {
+        return writeQueueSize;
+    }
+
+    public void setWriteQueueSize(int writeQueueSize) {
+        this.writeQueueSize = writeQueueSize;
     }
 }
