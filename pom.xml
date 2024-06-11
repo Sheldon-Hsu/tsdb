@@ -53,22 +53,15 @@
         <junit.version>5.10.0</junit.version>
         <junit.platform.version>1.10.0</junit.platform.version>
         <hutool.version>5.8.25</hutool.version>
+
+
+        <!--        thrift-->
+        <libthrift.version>0.20.0</libthrift.version>
+        <tsdb-tools-thrift.version>0.20.0</tsdb-tools-thrift.version>
+
+
     </properties>
 
-    <profiles>
-        <profile>
-            <id>openjdk11</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-                <jdk>11</jdk>
-            </activation>
-            <properties>
-                <maven.compiler.source>11</maven.compiler.source>
-                <maven.compiler.target>11</maven.compiler.target>
-                <maven.compiler.compilerVersion>11</maven.compiler.compilerVersion>
-            </properties>
-        </profile>
-    </profiles>
 
     <dependencyManagement>
         <dependencies>
@@ -183,6 +176,13 @@
                 <scope>test</scope>
             </dependency>
             <!--            test dependency end-->
+
+            <!--            thrift start-->
+            <dependency>
+                <groupId>org.apache.thrift</groupId>
+                <artifactId>libthrift</artifactId>
+                <version>${libthrift.version}</version>
+            </dependency>
         </dependencies>
 
     </dependencyManagement>
@@ -221,6 +221,103 @@
 
     <build>
 
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.thrift.tools</groupId>
+                    <artifactId>maven-thrift-plugin</artifactId>
+                    <version>0.1.11</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
     </build>
+
+    <profiles>
+        <profile>
+            <id>openjdk11</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+                <jdk>11</jdk>
+            </activation>
+            <properties>
+                <maven.compiler.source>11</maven.compiler.source>
+                <maven.compiler.target>11</maven.compiler.target>
+                <maven.compiler.compilerVersion>11</maven.compiler.compilerVersion>
+            </properties>
+        </profile>
+        <profile>
+            <id>windows</id>
+            <activation>
+                <os>
+                    <family>windows</family>
+                </os>
+            </activation>
+            <properties>
+                <os.classifier>windows-x86_64</os.classifier>
+                <thrift.executable>thrift-${tsdb-tools-thrift.version}-win-x86_64.exe</thrift.executable>
+                <thrift.skip-making-executable>true</thrift.skip-making-executable>
+                <thrift.exe-cmd.executable>echo</thrift.exe-cmd.executable>
+                <thrift.exe-cmd.args>"Do nothing"</thrift.exe-cmd.args>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>thrift-generation</id>
+            <activation>
+                <file>
+                    <exists>src/main/thrift</exists>
+                </file>
+            </activation>
+            <properties>
+                <thrift.exec.absolute.path>./tools/${thrift.executable}</thrift.exec.absolute.path>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>1.6.0</version>
+                        <executions>
+                            <execution>
+                                <id>make-thrift-executable</id>
+                                <phase>generate-sources</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <skip>${thrift.skip-making-executable}</skip>
+                                    <executable>${thrift.exe-cmd.executable}</executable>
+                                    <commandlineArgs>${thrift.exe-cmd.args}</commandlineArgs>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.thrift.tools</groupId>
+                        <artifactId>maven-thrift-plugin</artifactId>
+                        <version>0.1.11</version>
+                        <configuration>
+                            <thriftExecutable>${thrift.exec.absolute.path}</thriftExecutable>
+                            <thriftSourceRoot>${project.basedir}/src/main/thrift</thriftSourceRoot>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>generate-thrift-sources-java</id>
+                                <goals>
+                                    <goal>compile</goal>
+                                </goals>
+                                <phase>generate-sources</phase>
+                                <configuration>
+                                    <generator>java</generator>
+                                    <thriftExecutable>${thrift.exec.absolute.path}</thriftExecutable>
+                                    <thriftSourceRoot>${basedir}/src/main/thrift</thriftSourceRoot>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 </project>
