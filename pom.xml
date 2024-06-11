@@ -54,11 +54,13 @@
         <junit.platform.version>1.10.0</junit.platform.version>
         <hutool.version>5.8.25</hutool.version>
 
-
+        <!--        antlr 4-->
+        <antlr4.version>4.8-1</antlr4.version>
         <!--        thrift-->
         <libthrift.version>0.20.0</libthrift.version>
         <tsdb-tools-thrift.version>0.20.0</tsdb-tools-thrift.version>
 
+        <codehaus.version>3.2.0</codehaus.version>
 
     </properties>
 
@@ -228,7 +230,20 @@
                     <artifactId>maven-thrift-plugin</artifactId>
                     <version>0.1.11</version>
                 </plugin>
+
+                <plugin>
+                    <groupId>org.antlr</groupId>
+                    <artifactId>antlr4-maven-plugin</artifactId>
+                    <version>${antlr4.version}</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>build-helper-maven-plugin</artifactId>
+                    <version>${codehaus.version}</version>
+                </plugin>
             </plugins>
+
         </pluginManagement>
     </build>
 

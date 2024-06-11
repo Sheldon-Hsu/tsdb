@@ -22,6 +22,7 @@ import com.tsdb.server.memory.IWMemStore;
 import com.tsdb.server.memory.WMemStore;
 import com.tsdb.server.storage.processor.TsFileProcessor;
 import com.tsdb.tsfile.meta.MetaConstant;
+import com.tsdb.tsfile.meta.Table;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,22 +36,24 @@ public class WMSManager {
     private static final int WAIT_TIME = 100;
     private final Map<String, Map<MetaConstant.ObjectType, TsFileProcessor>> cache = new ConcurrentHashMap<>();
 
+    private Table table;
+
     public TsFileProcessor getProcessor(String catalog, MetaConstant.ObjectType type, String name) {
         TsFileProcessor processor = cache.get(catalog).get(type);
         return processor;
     }
 
 
-    public synchronized IWMemStore getAvailableMemStore(String catalog, String schema, String table) throws WriteProcessException {
+    public synchronized IWMemStore getAvailableMemStore(String catalog, String schema, String tableName) throws WriteProcessException {
         if (!reachMaxMemStoreNumber()) {
             addMemStoreNumber();
-            return new WMemStore();
+            return new WMemStore(table);
         }
         int waitCount = 1;
         while (true) {
             if (!reachMaxMemStoreNumber()) {
                 addMemStoreNumber();
-                return new WMemStore();
+                return new WMemStore(table);
             }
             try {
                 wait(WAIT_TIME);

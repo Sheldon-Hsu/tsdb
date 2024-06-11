@@ -24,7 +24,7 @@ import com.tsdb.server.plan.physics.InsertRowPlan;
 import com.tsdb.server.storage.StorageEngine;
 import com.tsdb.server.storage.TsFileResource;
 import com.tsdb.server.storage.WMSManager;
-import com.tsdb.tsfile.meta.MetaConstant;
+import com.tsdb.tsfile.meta.Table;
 import com.tsdb.tsfile.write.chunk.IChunkWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,6 +45,7 @@ public class TsFileProcessor implements Processor {
     private IWMemStore workMemStore;
     private long timeRangeId;
     private Long wMemStoreLastUpdateTime;
+    private Table table;
 
     /**
      * Data is written to memory
@@ -57,7 +58,7 @@ public class TsFileProcessor implements Processor {
     @Override
     public void insert(InsertRowPlan insertRowPlan) throws WriteProcessException {
         if (workMemStore == null) {
-            workMemStore = new WMemStore();
+            workMemStore = new WMemStore(table);
         }
         String catalog = insertRowPlan.getCatalog();
         String schema = insertRowPlan.getSchema();
@@ -80,7 +81,7 @@ public class TsFileProcessor implements Processor {
     private void flush() {
         rwLock.writeLock().lock();
         flushManager.addToFlush(workMemStore);
-        workMemStore = new WMemStore();
+        workMemStore = new WMemStore(table);
         rwLock.writeLock().unlock();
     }
 

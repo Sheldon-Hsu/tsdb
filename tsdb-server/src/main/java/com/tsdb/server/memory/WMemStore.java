@@ -16,17 +16,34 @@ package com.tsdb.server.memory;
 
 import com.tsdb.server.plan.physics.InsertRowPlan;
 import com.tsdb.server.plan.physics.InsertRowsPlan;
-import com.tsdb.server.storage.StorageEngine;
+import com.tsdb.tsfile.memory.AlignedTVList;
+import com.tsdb.tsfile.memory.WritableChunk;
+import com.tsdb.tsfile.meta.Table;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class WMemStore implements IWMemStore{
-    private static final Logger logger = LoggerFactory.getLogger(WMemStore.class);
+import java.util.HashMap;
+import java.util.Map;
 
+public class WMemStore implements IWMemStore {
+    private static final Logger logger = LoggerFactory.getLogger(WMemStore.class);
+    private final Map<Integer, WritableChunk> writableChunkMap;
+    private final Table table;
+
+    public WMemStore(Table table) {
+        this.writableChunkMap = new HashMap<>();
+        this.table = table;
+    }
 
     @Override
     public void insert(InsertRowPlan insertRowPlan) {
         logger.info("WMemStore insert data...");
+        Integer id = insertRowPlan.getId();
+        if (!writableChunkMap.containsKey(id)) {
+            writableChunkMap.put(id, new WritableChunk(new AlignedTVList(table.getDataTypesOrdered())));
+        }
+        writableChunkMap.get(id).write(insertRowPlan.getTime(),insertRowPlan.getValues());
+
     }
 
     @Override

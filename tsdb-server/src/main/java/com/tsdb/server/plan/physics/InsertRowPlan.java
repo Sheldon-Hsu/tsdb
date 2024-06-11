@@ -21,6 +21,7 @@ public class InsertRowPlan implements PhysicalPlan{
     private TableInfo tableInfo ;
     private long time;
     private int id;
+    private Object[] values;
 
     public int getId() {
         return id;
@@ -64,5 +65,13 @@ public class InsertRowPlan implements PhysicalPlan{
     @Override
     public MetaConstant.ObjectType getObject() {
         return null;
+    }
+
+    public Object[] getValues() {
+        return values;
+    }
+
+    public void setValues(Object[] values) {
+        this.values = values;
     }
 }

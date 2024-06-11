@@ -70,13 +70,13 @@ public class FlushManager implements IService {
     private FlushManager() {}
 
     public static FlushManager getInstance() {
-        return InstanceHolder.instance;
+        return InstanceHolder.INSTANCE;
     }
 
     private static class InstanceHolder {
 
         private InstanceHolder() {}
 
-        private static FlushManager instance = new FlushManager();
+        private static final FlushManager INSTANCE = new FlushManager();
     }
 }

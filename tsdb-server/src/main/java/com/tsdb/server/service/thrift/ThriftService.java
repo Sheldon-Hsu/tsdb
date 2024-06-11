@@ -12,14 +12,15 @@
  * limitations under the License.
  */
 
-package com.tsdb.server.storage.region;
+package com.tsdb.server.service.thrift;
 
-import com.tsdb.server.query.QueryEngine;
 import com.tsdb.server.service.IService;
 import com.tsdb.server.service.ServiceID;
-import com.tsdb.server.storage.StorageEngine;
+import org.apache.thrift.TProcessor;
 
-public class RegionServer implements IService {
+public class ThriftService implements IService {
+
+    private TProcessor processor;
 
     @Override
     public void start() {
@@ -36,20 +37,28 @@ public class RegionServer implements IService {
 
     }
 
+
+    private void startService(){
+
+    }
+
+    private void initProcessor(){
+
+    }
+
     @Override
     public ServiceID getServiceID() {
         return null;
     }
+    public static ThriftService getInstance() {
+        return ThriftService.InstanceHolder.INSTANCE;
+    }
 
     private static class InstanceHolder {
 
-        private static final RegionServer INSTANCE = new RegionServer();
+        private InstanceHolder() {}
 
-        private InstanceHolder() {
-        }
+        private static final ThriftService INSTANCE = new ThriftService();
     }
 
-    public static RegionServer getInstance() {
-        return RegionServer.InstanceHolder.INSTANCE;
-    }
 }

@@ -22,7 +22,7 @@ import org.slf4j.LoggerFactory;
 
 public class QueryEngine implements IService {
     private static final Logger logger = LoggerFactory.getLogger(QueryEngine.class);
-    private QueryTaskPoolManager pool = QueryTaskPoolManager.getInstance();
+    private final QueryTaskPoolManager pool = QueryTaskPoolManager.getInstance();
 
 
     @Override
@@ -47,13 +47,13 @@ public class QueryEngine implements IService {
     }
 
     public static QueryEngine getInstance() {
-        return QueryEngine.InstanceHolder.instance;
+        return QueryEngine.InstanceHolder.INSTANCE;
     }
 
     private static class InstanceHolder {
 
         private InstanceHolder() {}
 
-        private static QueryEngine instance = new QueryEngine();
+        private static final QueryEngine INSTANCE = new QueryEngine();
     }
 }

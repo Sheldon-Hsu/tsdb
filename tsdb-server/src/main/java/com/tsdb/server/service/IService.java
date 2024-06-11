@@ -14,8 +14,10 @@
 
 package com.tsdb.server.service;
 
+import com.tsdb.server.exception.service.StartupException;
+
 public interface IService {
-    void start() ;
+    void start() throws StartupException;
 
     /**
      * Stop accepting tasks. The tasks in the queue are closed after completion
