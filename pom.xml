@@ -324,6 +324,10 @@
                         <groupId>org.apache.thrift.tools</groupId>
                         <artifactId>maven-thrift-plugin</artifactId>
                         <version>0.1.11</version>
+                        <configuration>
+                            <thriftExecutable>${thrift.exec.absolute.path}</thriftExecutable>
+                            <thriftSourceRoot>${project.basedir}/src/main/thrift</thriftSourceRoot>
+                        </configuration>
                         <executions>
                             <execution>
                                 <id>generate-thrift-sources-java</id>
