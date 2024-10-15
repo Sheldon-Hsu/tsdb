@@ -31,6 +31,11 @@
             <artifactId>tsfile</artifactId>
             <groupId>com.tsdb</groupId>
         </dependency>
+
+        <dependency>
+            <artifactId>thrift</artifactId>
+            <groupId>com.tsdb</groupId>
+        </dependency>
         <dependency>
             <artifactId>rpc</artifactId>
             <groupId>com.tsdb</groupId>
