@@ -13,14 +13,22 @@
  */
 package com.tsdb.server.service.thrift;
 
-import com.tsdb.rpc.thrift.TSDBRpcService;
-import com.tsdb.rpc.thrift.TSOpenSessionReq;
-import com.tsdb.rpc.thrift.TSOpenSessionResp;
+import com.tsdb.rpc.thrift.*;
 import org.apache.thrift.TException;
 
 public class RPCService implements TSDBRpcService.Iface{
     @Override
     public TSOpenSessionResp openSession(TSOpenSessionReq request) throws TException {
+        return null;
+    }
+
+    @Override
+    public TSDBStatus closeSession(TSCloseSessionReq request) throws TException {
+        return null;
+    }
+
+    @Override
+    public TSDBStatus insertData(InsertDataReq request) throws TException {
         return null;
     }
 }

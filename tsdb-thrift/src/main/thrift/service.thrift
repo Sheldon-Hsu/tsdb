@@ -37,11 +37,28 @@ struct TSOpenSessionResp {
 
 
 
+struct TSOpenSessionReq {
+  1: required string zoneId
+  2: required string username
+  3: optional string password
+  4: optional map<string, string> configuration
+}
+
+struct TSCloseSessionReq {
+  1: required i64 sessionId
+}
+
+struct InsertDataReq{
+    1: required i64 sessionId
+    2: required string catalog
+    3: required string table
+    4: required binary data
+}
+
 service TSDBRpcService{
     TSOpenSessionResp openSession(1:TSOpenSessionReq request);
     TSDBStatus closeSession(1:TSCloseSessionReq request);
     TSDBStatus insertData(1:InsertDataReq request);
-
 }
 
 
