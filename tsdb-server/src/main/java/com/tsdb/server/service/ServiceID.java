@@ -23,9 +23,10 @@ package com.tsdb.server.service;
 
 public enum ServiceID {
   STORAGE_ENGINE_SERVICE("Storage Engine ServerService"),
+  QUERY_ENGINE_SERVICE("Query Engine ServerService"),
   RPC_SERVICE("RPC ServerService"),
-  FLUSH_SERVICE("Flush ServerService")
-
+  FLUSH_SERVICE("Flush ServerService"),
+  REGION_SERVICE("Region ServerService")
   ;
 
   private final String name;

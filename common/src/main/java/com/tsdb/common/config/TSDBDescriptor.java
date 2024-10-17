@@ -18,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Properties;
+import java.util.ResourceBundle;
 
 public class TSDBDescriptor {
     private static final Logger logger = LoggerFactory.getLogger(TSDBDescriptor.class);
@@ -34,8 +35,15 @@ public class TSDBDescriptor {
     }
 
     public void loadProperties(Properties properties) {
-
+        ResourceBundle resource = ResourceBundle.getBundle("tsdb.properties");
+        conf.setRpcAddress(resource.getString("tsdb.host"));
+        conf.setRpcPort(Integer.parseInt(resource.getString("tsdb.port")));
     }
+
+
+
+
+
 
     public static TSDBDescriptor getInstance() {
         return TSDBDescriptorHolder.INSTANCE;

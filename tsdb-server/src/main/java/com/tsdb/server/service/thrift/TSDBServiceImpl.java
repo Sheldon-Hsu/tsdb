@@ -15,6 +15,7 @@ package com.tsdb.server.service.thrift;
 
 import com.tsdb.rpc.thrift.*;
 import com.tsdb.server.service.ServiceProvider;
+import com.tsdb.server.service.login.SessionStatus;
 import org.apache.thrift.TException;
 
 public class TSDBServiceImpl implements TSDBRpcService.Iface {
@@ -25,8 +26,12 @@ public class TSDBServiceImpl implements TSDBRpcService.Iface {
         String username = request.getUsername();
         String passwd  =request.getPassword();
         String zoneId = request.getZoneId();
-//        serviceProvider.openSession();
-        return null;
+        String database = request.getDatabase();
+        String host = request.getHost();
+        SessionStatus sessionStatus = serviceProvider.openSession(database,username,passwd,host,zoneId);
+        TSOpenSessionResp resp = new TSOpenSessionResp(sessionStatus);
+        resp.setSessionId(sessionStatus.getSessionId());
+        return resp;
     }
 
     @Override

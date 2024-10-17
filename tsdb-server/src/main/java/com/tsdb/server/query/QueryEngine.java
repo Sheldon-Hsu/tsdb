@@ -43,7 +43,7 @@ public class QueryEngine implements IService {
 
     @Override
     public ServiceID getServiceID() {
-        return null;
+        return ServiceID.QUERY_ENGINE_SERVICE;
     }
 
     public static QueryEngine getInstance() {

@@ -13,8 +13,11 @@
  */
 package com.tsdb.server.service;
 
+import com.tsdb.common.config.TSDBMessage;
+import com.tsdb.rpc.TSStatusCode;
 import com.tsdb.rpc.thrift.TSDBStatus;
 import com.tsdb.server.control.SessionManager;
+import com.tsdb.server.service.login.SessionStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,21 +25,25 @@ public class ServiceProvider {
     private static final Logger logger = LoggerFactory.getLogger(ServiceProvider.class);
     public SessionManager sessionManager = SessionManager.getInstance();
 
-    public TSDBStatus openSession(String database, String username, String password, String host, String zoneId) {
-        TSDBStatus tsdbStatus = new TSDBStatus();
+    public SessionStatus openSession(String database, String username, String password, String host, String zoneId) {
+        SessionStatus tsdbStatus = new SessionStatus();
         boolean status = false;
         long sessionId = sessionManager.requestSessionId(username);
 
 
         status = true;
         if (status){
-//            tsdbStatus
+            tsdbStatus.setCode(TSStatusCode.SUCCESS_STATUS.getStatusCode());
+            tsdbStatus.setMessage(TSDBMessage.LOGIN_SUCCESS);
+        }else {
+            tsdbStatus.setCode(TSStatusCode.WRONG_LOGIN_PASSWORD_ERROR.getStatusCode());
+            tsdbStatus.setMessage(TSDBMessage.AUTH_FAIL);
         }
         logger.info("login status :{}. User: {},opens session:{}.",
                 status,
                 username,
                 sessionId);
-
+        tsdbStatus.setSessionId(sessionId);
 
         return tsdbStatus;
     }

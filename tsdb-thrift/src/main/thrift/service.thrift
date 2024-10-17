@@ -39,9 +39,11 @@ struct TSOpenSessionResp {
 
 struct TSOpenSessionReq {
   1: required string zoneId
-  2: required string username
-  3: optional string password
-  4: optional map<string, string> configuration
+  2: required string database
+  3: required string username
+  4: optional string password
+  6: required string host
+  5: optional map<string, string> configuration
 }
 
 struct TSCloseSessionReq {

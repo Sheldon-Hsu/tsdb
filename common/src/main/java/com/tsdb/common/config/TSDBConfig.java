@@ -16,6 +16,10 @@ package com.tsdb.common.config;
 
 public class TSDBConfig {
 
+    private String rpcAddress = "0.0.0.0";
+    private int rpcPort = 9088;
+
+
     private int maxMemStoreNumber = 0;
     private long workMemSize = 0L;
     private int longestFlushTime = 0;
@@ -29,7 +33,21 @@ public class TSDBConfig {
     private int writeQueueSize = 10;
 
 
+    public String getRpcAddress() {
+        return rpcAddress;
+    }
 
+    public void setRpcAddress(String rpcAddress) {
+        this.rpcAddress = rpcAddress;
+    }
+
+    public int getRpcPort() {
+        return rpcPort;
+    }
+
+    public void setRpcPort(int rpcPort) {
+        this.rpcPort = rpcPort;
+    }
 
     public int getLongestFlushTime() {
         return longestFlushTime;

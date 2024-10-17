@@ -19,7 +19,7 @@ import com.tsdb.server.exception.service.StartupException;
 import com.tsdb.server.flush.FlushManager;
 import com.tsdb.server.query.QueryEngine;
 import com.tsdb.server.service.ServiceRegister;
-import com.tsdb.server.service.thrift.ThriftService;
+import com.tsdb.server.service.thrift.RPCService;
 import com.tsdb.server.storage.StorageEngine;
 import com.tsdb.server.storage.region.RegionServer;
 import org.slf4j.Logger;
@@ -47,7 +47,7 @@ public class TSDB {
         register.register(FlushManager.getInstance());
         register.register(QueryEngine.getInstance());
         register.register(RegionServer.getInstance());
-        register.register(ThriftService.getInstance());
+        register.register(RPCService.getInstance());
     }
 
     public static TSDB getInstance() {

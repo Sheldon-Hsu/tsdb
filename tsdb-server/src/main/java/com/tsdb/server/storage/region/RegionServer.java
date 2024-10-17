@@ -14,10 +14,8 @@
 
 package com.tsdb.server.storage.region;
 
-import com.tsdb.server.query.QueryEngine;
 import com.tsdb.server.service.IService;
 import com.tsdb.server.service.ServiceID;
-import com.tsdb.server.storage.StorageEngine;
 
 public class RegionServer implements IService {
 
@@ -38,7 +36,7 @@ public class RegionServer implements IService {
 
     @Override
     public ServiceID getServiceID() {
-        return null;
+        return ServiceID.REGION_SERVICE;
     }
 
     private static class InstanceHolder {
