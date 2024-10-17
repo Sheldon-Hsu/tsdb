@@ -14,11 +14,18 @@
 package com.tsdb.server.service.thrift;
 
 import com.tsdb.rpc.thrift.*;
+import com.tsdb.server.service.ServiceProvider;
 import org.apache.thrift.TException;
 
-public class RPCService implements TSDBRpcService.Iface{
+public class TSDBServiceImpl implements TSDBRpcService.Iface {
+    private static final ServiceProvider serviceProvider = ServiceProvider.getInstance();
+
     @Override
     public TSOpenSessionResp openSession(TSOpenSessionReq request) throws TException {
+        String username = request.getUsername();
+        String passwd  =request.getPassword();
+        String zoneId = request.getZoneId();
+//        serviceProvider.openSession();
         return null;
     }
 
@@ -29,6 +36,7 @@ public class RPCService implements TSDBRpcService.Iface{
 
     @Override
     public TSDBStatus insertData(InsertDataReq request) throws TException {
+
         return null;
     }
 }
