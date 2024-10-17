@@ -2,7 +2,7 @@
 'https://plantuml.com/wbs-diagram
 
 + TSDB Instance(Top Leave)
-++ Catalog
+++ Catalog(database)
 +++ schema
 ++++ table
 +++++ Time series
