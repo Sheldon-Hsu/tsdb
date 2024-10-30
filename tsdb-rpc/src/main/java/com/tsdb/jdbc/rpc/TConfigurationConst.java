@@ -1,4 +1,4 @@
-/**
+/*
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -12,15 +12,17 @@
  * limitations under the License.
  */
 
-include "common.thrift"
-include "client.thrift"
-namespace java com.tsdb.rpc.thrift
+package com.tsdb.jdbc.rpc;
 
+import org.apache.thrift.TConfiguration;
 
-service TSDBRpcService{
-    client.TSOpenSessionResp openSession(1:client.TSOpenSessionReq request);
-    common.TSDBStatus closeSession(1:client.TSCloseSessionReq request);
-    common.TSDBStatus insertData(1:client.InsertDataReq request);
+public class TConfigurationConst {
+  // https://github.com/apache/thrift/blob/master/doc/specs/thrift-tconfiguration.md
+  public static final TConfiguration defaultTConfiguration =
+      new TConfiguration(
+          RpcUtils.THRIFT_FRAME_MAX_SIZE + 4,
+          RpcUtils.THRIFT_FRAME_MAX_SIZE,
+          TConfiguration.DEFAULT_RECURSION_DEPTH);
+
+  private TConfigurationConst() {}
 }
-
-

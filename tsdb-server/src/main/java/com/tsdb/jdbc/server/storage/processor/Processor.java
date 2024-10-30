@@ -1,4 +1,4 @@
-/**
+/*
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -12,15 +12,11 @@
  * limitations under the License.
  */
 
-include "common.thrift"
-include "client.thrift"
-namespace java com.tsdb.rpc.thrift
+package com.tsdb.jdbc.server.storage.processor;
 
+import com.tsdb.jdbc.server.exception.WriteProcessException;
+import com.tsdb.jdbc.server.plan.physics.InsertRowPlan;
 
-service TSDBRpcService{
-    client.TSOpenSessionResp openSession(1:client.TSOpenSessionReq request);
-    common.TSDBStatus closeSession(1:client.TSCloseSessionReq request);
-    common.TSDBStatus insertData(1:client.InsertDataReq request);
+public interface Processor {
+    public void insert(InsertRowPlan insertRowPlan) throws WriteProcessException;
 }
-
-

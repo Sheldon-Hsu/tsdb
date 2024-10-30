@@ -12,15 +12,15 @@
  * limitations under the License.
  */
 
-include "common.thrift"
-include "client.thrift"
-namespace java com.tsdb.rpc.thrift
+namespace java com.tsdb.common.rpc.thrift
 
-
-service TSDBRpcService{
-    client.TSOpenSessionResp openSession(1:client.TSOpenSessionReq request);
-    common.TSDBStatus closeSession(1:client.TSCloseSessionReq request);
-    common.TSDBStatus insertData(1:client.InsertDataReq request);
+struct TSDBStatus{
+    1: required i32 code
+    2: optional string message
 }
 
-
+exception TSDBException{
+    1: i32 code,
+    2: string msg,
+    3: list<TSDBException> subException;
+}

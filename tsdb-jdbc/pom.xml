@@ -26,5 +26,16 @@
     <artifactId>jdbc</artifactId>
     <name>jdbc</name>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.tsdb</groupId>
+            <artifactId>rpc</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.tsdb</groupId>
+            <artifactId>thrift</artifactId>
+        </dependency>
+    </dependencies>
 
 </project>
