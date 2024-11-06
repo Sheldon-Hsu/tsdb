@@ -100,7 +100,7 @@ public class Driver implements java.sql.Driver {
             }
         }
         ConnectThread ct = new ConnectThread(url, props);
-        Thread thread = new Thread(ct, "PostgreSQL JDBC driver connection thread");
+        Thread thread = new Thread(ct, "TSDB JDBC driver connection thread");
         thread.setDaemon(true); // Don't prevent the VM from shutting down
         thread.start();
         return ct.getResult(timeout);

@@ -31,8 +31,8 @@ public class Config {
     /** If host is provided, without a port. */
     static final int TSDB_DEFAULT_PORT = 6667;
 
-    /** TsFile's default series name. */
-    static final String DEFAULT_SERIES_NAME = "default";
+    /** TsFile's default database name. */
+    static final String DEFAULT_DATABASE_NAME = "default";
 
     static final String AUTH_USER = "user";
     static final String DEFAULT_USER = "user";

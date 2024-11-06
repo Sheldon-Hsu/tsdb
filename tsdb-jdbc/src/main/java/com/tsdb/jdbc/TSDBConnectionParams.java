@@ -21,7 +21,7 @@ public class TSDBConnectionParams {
     private String host = Config.TSDB_DEFAULT_HOST;
     private int port = Config.TSDB_DEFAULT_PORT;
     private String jdbcUriString;
-    private String seriesName = Config.DEFAULT_SERIES_NAME;
+    private String databaseName = Config.DEFAULT_DATABASE_NAME;
     private String username = Config.DEFAULT_USER;
     private String password = Config.DEFAULT_PASSWORD;
 
@@ -66,12 +66,12 @@ public class TSDBConnectionParams {
         this.jdbcUriString = jdbcUriString;
     }
 
-    public String getSeriesName() {
-        return seriesName;
+    public String getDatabaseName() {
+        return databaseName;
     }
 
-    public void setSeriesName(String seriesName) {
-        this.seriesName = seriesName;
+    public void setDatabaseName(String databaseName) {
+        this.databaseName = databaseName;
     }
 
     public String getUsername() {

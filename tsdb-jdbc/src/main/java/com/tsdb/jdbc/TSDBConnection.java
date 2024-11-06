@@ -385,6 +385,7 @@ public class TSDBConnection implements Connection {
         TSOpenSessionReq openRequest = new TSOpenSessionReq();
         openRequest.setUsername(params.getUsername());
         openRequest.setPassword(params.getPassword());
+        openRequest.setDatabase(params.getDatabaseName());
         openRequest.setHost(params.getHost());
         openRequest.setZoneId(params.getTimeZone());
         TSOpenSessionResp openResp= null;

@@ -41,6 +41,8 @@
         <module>tsdb-rpc</module>
         <module>tsdb-session</module>
         <module>common</module>
+        <module>example</module>
+        <module>example/jdbc</module>
     </modules>
 
     <properties>
