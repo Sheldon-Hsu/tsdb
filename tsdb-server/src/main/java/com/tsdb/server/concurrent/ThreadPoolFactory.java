@@ -54,7 +54,9 @@ public class ThreadPoolFactory {
     private static final String NEW_FIXED_THREAD_POOL_LOGGER_FORMAT = "new fixed thread pool: {}, thread number: {}";
 
 
-    public static ExecutorService newFixedThreadPool(int nThreads, String poolName,int queueSize) {
+    public static ExecutorService newFixedThreadPool(int nThreads,
+                                                     String poolName,
+                                                     int queueSize) {
         logger.info(NEW_FIXED_THREAD_POOL_LOGGER_FORMAT, poolName, nThreads);
 
         return new ThreadPoolExecutor(
@@ -79,6 +81,41 @@ public class ThreadPoolFactory {
                 new TSDBThreadFactory(poolName));
     }
 
+
+    public static ExecutorService newFixedThreadPool(int nThreads,
+                                                     String poolName,
+                                                     BlockingQueue<Runnable> workQueue) {
+        logger.info(NEW_FIXED_THREAD_POOL_LOGGER_FORMAT, poolName, nThreads);
+
+        return new ThreadPoolExecutor(
+                nThreads,
+                nThreads,
+                0L,
+                TimeUnit.MILLISECONDS,
+                new LinkedBlockingQueue<>(),
+                new TSDBThreadFactory(poolName));
+    }
+
+
+    /**
+     * see {@link Executors#newFixedThreadPool(int, java.util.concurrent.ThreadFactory)}.
+     *
+     * @param poolName - the name of thread pool
+     * @return fixed size thread pool
+     */
+    public static ExecutorService newFixedThreadPool(int nThreads,
+                                                     String poolName,
+                                                     RejectedExecutionHandler handler) {
+        logger.info(NEW_FIXED_THREAD_POOL_LOGGER_FORMAT, poolName, nThreads);
+        return new ThreadPoolExecutor(
+                nThreads,
+                nThreads,
+                0L,
+                TimeUnit.MILLISECONDS,
+                new LinkedBlockingQueue<>(),
+                new TSDBThreadFactory(poolName),
+                handler);
+    }
 
 
     private static class TSDBThreadFactory implements ThreadFactory {

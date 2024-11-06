@@ -22,7 +22,7 @@ public class RpcTransportFactory extends TTransportFactory {
 
   // TODO: make it a config
   public static boolean USE_SNAPPY = false;
-  public static RpcTransportFactory INSTANCE;
+  private static RpcTransportFactory INSTANCE;
 
   private static int thriftDefaultBufferSize = RpcUtils.THRIFT_DEFAULT_BUF_CAPACITY;
   private static int thriftMaxFrameSize = RpcUtils.THRIFT_FRAME_MAX_SIZE;
@@ -110,5 +110,9 @@ public class RpcTransportFactory extends TTransportFactory {
             : new RpcTransportFactory(
                 new TimeoutChangeableTFastFramedTransport.Factory(
                     thriftDefaultBufferSize, thriftMaxFrameSize));
+  }
+
+  public static RpcTransportFactory getInstance() {
+    return INSTANCE;
   }
 }

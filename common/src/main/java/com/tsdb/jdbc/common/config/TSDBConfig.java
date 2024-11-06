@@ -38,6 +38,15 @@ public class TSDBConfig {
     private long workMemSize = 0L;
     private int longestFlushTime = 0;
 
+    /** Max concurrent client number. */
+    private int rpcMaxConcurrentClientNum = 65535;
+
+
+    /** just for test wait for 60 second by default. */
+    private int thriftServerAwaitTimeForStopService = 60;
+
+
+
     /** How many threads can concurrently flush. When <= 0, use CPU core number. */
     private int concurrentFlushThread = Runtime.getRuntime().availableProcessors();
     private int flushQueueSize = 10;
@@ -134,4 +143,22 @@ public class TSDBConfig {
     public void setWriteQueueSize(int writeQueueSize) {
         this.writeQueueSize = writeQueueSize;
     }
+
+
+    public int getRpcMaxConcurrentClientNum() {
+        return rpcMaxConcurrentClientNum;
+    }
+
+    public void setRpcMaxConcurrentClientNum(int rpcMaxConcurrentClientNum) {
+        this.rpcMaxConcurrentClientNum = rpcMaxConcurrentClientNum;
+    }
+
+    public int getThriftServerAwaitTimeForStopService() {
+        return thriftServerAwaitTimeForStopService;
+    }
+
+    public void setThriftServerAwaitTimeForStopService(int thriftServerAwaitTimeForStopService) {
+        this.thriftServerAwaitTimeForStopService = thriftServerAwaitTimeForStopService;
+    }
+
 }

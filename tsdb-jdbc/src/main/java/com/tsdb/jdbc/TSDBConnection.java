@@ -58,11 +58,7 @@ public class TSDBConnection implements Connection {
         params = Utils.parseUrl(url, info);
         this.url = url;
         openTransport();
-        if (Config.rpcThriftCompressionEnable) {
-            setClient(RpcUtils.newSynchronizedClient(new TSDBRpcService.Client(new TCompactProtocol(transport))));
-        } else {
-            setClient(RpcUtils.newSynchronizedClient(new TSDBRpcService.Client(new TBinaryProtocol(transport))));
-        }
+        setClient(RpcUtils.newSynchronizedClient(new TSDBRpcService.Client(new TBinaryProtocol(transport))));
         openSession();
         autoCommit = false;
     }
@@ -338,7 +334,7 @@ public class TSDBConnection implements Connection {
 
     @Override
     public int getNetworkTimeout() throws SQLException {
-        return 0;
+        return 10000;
     }
 
     @Override
@@ -357,7 +353,7 @@ public class TSDBConnection implements Connection {
 
         if (params.isUseSSL()) {
             transport =
-                    RpcTransportFactory.INSTANCE.getTransport(
+                    RpcTransportFactory.getInstance().getTransport(
                             params.getHost(),
                             params.getPort(),
                             getNetworkTimeout(),
@@ -365,7 +361,7 @@ public class TSDBConnection implements Connection {
                             params.getTrustStorePwd());
         } else {
             transport =
-                    RpcTransportFactory.INSTANCE.getTransport(
+                    RpcTransportFactory.getInstance().getTransport(
                             params.getHost(), params.getPort(), getNetworkTimeout());
         }
         if (!transport.isOpen()) {
@@ -388,9 +384,9 @@ public class TSDBConnection implements Connection {
         openRequest.setDatabase(params.getDatabaseName());
         openRequest.setHost(params.getHost());
         openRequest.setZoneId(params.getTimeZone());
-        TSOpenSessionResp openResp= null;
+        TSOpenSessionResp openResp = null;
         try {
-            openResp =  client.openSession(openRequest);
+            openResp = client.openSession(openRequest);
             sessionId = openResp.getSessionId();
             RpcUtils.verifySuccess(openResp.getStatus());
         } catch (TException e) {

@@ -71,11 +71,13 @@ public class TSDB {
 
 
     private void setUp() throws StartupException {
+        logger.info("Setting up TSDB...");
         register.register(StorageEngine.getInstance());
         register.register(FlushManager.getInstance());
         register.register(QueryEngine.getInstance());
         register.register(RegionServer.getInstance());
         register.register(RPCService.getInstance());
+        logger.info("TSDB is started now.");
     }
 
     public static TSDB getInstance() {

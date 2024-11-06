@@ -46,12 +46,17 @@ import com.tsdb.server.service.ServiceProvider;
 import com.tsdb.server.service.login.SessionStatus;
 import com.tsdb.rpc.thrift.*;
 import org.apache.thrift.TException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class TSDBServiceImpl implements TSDBRpcService.Iface {
+    private static final Logger logger = LoggerFactory.getLogger(TSDBServiceImpl.class);
+
     private static final ServiceProvider serviceProvider = ServiceProvider.getInstance();
 
     @Override
     public TSOpenSessionResp openSession(TSOpenSessionReq request) throws TException {
+        logger.info("open session for ");
         String username = request.getUsername();
         String passwd  =request.getPassword();
         String zoneId = request.getZoneId();

@@ -42,20 +42,10 @@
 
 package com.tsdb.server.service.thrift;
 
-import com.tsdb.jdbc.common.config.TSDBConfig;
 import com.tsdb.jdbc.common.config.TSDBConstant;
-import com.tsdb.jdbc.common.config.TSDBDescriptor;
-import com.tsdb.jdbc.rpc.TSStatusCode;
 import com.tsdb.server.exception.service.StartupException;
 import com.tsdb.server.service.IService;
 import com.tsdb.server.service.ServiceID;
-import com.tsdb.rpc.thrift.TSDBRpcService;
-import org.apache.thrift.TProcessor;
-import org.apache.thrift.server.TServer;
-import org.apache.thrift.server.TThreadPoolServer;
-import org.apache.thrift.transport.TServerSocket;
-import org.apache.thrift.transport.TServerTransport;
-import org.apache.thrift.transport.TTransportException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -63,11 +53,8 @@ public class RPCService implements IService {
     private static final Logger logger = LoggerFactory.getLogger(RPCService.class);
     private static final String STATUS_UP = "UP";
     private static final String STATUS_DOWN = "DOWN";
+    private ThriftServiceThread rpcServiceThread;
 
-    private RPCServiceThread rpcServiceThread;
-
-
-    private TProcessor processor;
 
     @Override
     public void start() throws StartupException {
@@ -75,10 +62,10 @@ public class RPCService implements IService {
             logger.info("{}: has en already running.", TSDBConstant.GLOBAL_DB_NAME);
             return;
         }
-        rpcServiceThread = new RPCServiceThread();
         logger.info("RPCService start...");
+        rpcServiceThread = new ThriftServiceThread();
         rpcServiceThread.start();
-
+        logger.info("RPCService started");
     }
 
     @Override
@@ -118,34 +105,6 @@ public class RPCService implements IService {
         return RPCService.InstanceHolder.INSTANCE;
     }
 
-
-    class RPCServiceThread extends Thread {
-        private TSDBRpcService.Processor<TSDBServiceImpl> processor;
-        private TServerTransport serverTransport;
-        private TServer tServer;
-        TSDBConfig config = TSDBDescriptor.getInstance().getConfig();
-
-
-        public RPCServiceThread() throws StartupException {
-            int port = config.getRpcPort();
-            String host = config.getRpcAddress();
-            processor = new TSDBRpcService.Processor<>(new TSDBServiceImpl());
-            try {
-                serverTransport = new TServerSocket(port);
-            } catch (TTransportException e) {
-                String errorMessage = String.format("Bind for %s:%s failed: port is already allocated.",host,port);
-                logger.error(errorMessage);
-                throw new StartupException(errorMessage, TSStatusCode.START_UP_ERROR.getStatusCode());
-            }
-            tServer = new TThreadPoolServer(new TThreadPoolServer.Args(serverTransport).processor(processor));
-        }
-
-        @Override
-        public void start(){
-            super.start();
-            tServer.serve();
-        }
-    }
 
 
     private static class InstanceHolder {
