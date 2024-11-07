@@ -81,8 +81,10 @@ public class RpcTransportFactory extends TTransportFactory {
   }
 
   public TTransport getTransport(String ip, int port, int timeout) throws TTransportException {
-    return inner.getTransport(
-        new TSocket(TConfigurationConst.defaultTConfiguration, ip, port, timeout));
+//    return inner.getTransport(
+//        new TSocket(TConfigurationConst.defaultTConfiguration, ip, port, timeout));
+//    TODO  something wrong with TimeoutChangeableTSnappyFramedTransport
+    return  new TSocket(ip, port, timeout);
   }
 
   public static boolean isUseSnappy() {

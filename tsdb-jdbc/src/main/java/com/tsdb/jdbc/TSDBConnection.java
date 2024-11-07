@@ -334,7 +334,7 @@ public class TSDBConnection implements Connection {
 
     @Override
     public int getNetworkTimeout() throws SQLException {
-        return 10000;
+        return 0;
     }
 
     @Override
