@@ -22,6 +22,7 @@ import com.tsdb.rpc.thrift.TSDBRpcService;
 import com.tsdb.server.concurrent.ThreadName;
 import com.tsdb.server.concurrent.ThreadPoolFactory;
 import com.tsdb.server.exception.service.StartupException;
+import com.tsdb.server.service.thrift.handler.RPCServiceHandler;
 import org.apache.thrift.TProcessor;
 import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.server.TServer;
@@ -32,10 +33,14 @@ import org.apache.thrift.transport.TTransportException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.net.InetSocketAddress;
 import java.util.concurrent.SynchronousQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 public class ThriftServiceThread extends Thread {
     private static final Logger logger = LoggerFactory.getLogger(RPCService.class);
+    private TSDBServiceImpl impl;
     private TSDBRpcService.Processor<TSDBServiceImpl> processor;
     private TServerTransport serverTransport;
     private TServer tServer;
@@ -46,12 +51,13 @@ public class ThriftServiceThread extends Thread {
     private String threadName = ThreadName.RPC_SERVICE.getName();
 
 
-    public ThriftServiceThread() throws StartupException {
+    public ThriftServiceThread() throws StartupException, ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchMethodException {
         int port = config.getRpcPort();
         String host = config.getRpcAddress();
-        processor = new TSDBRpcService.Processor<>(new TSDBServiceImpl());
+        impl = ( TSDBServiceImpl)Class.forName(TSDBServiceImpl.class.getName()).newInstance();
+        processor = new TSDBRpcService.Processor<>(impl);
         try {
-            serverTransport = new TServerSocket(port);
+            serverTransport = new TServerSocket(new InetSocketAddress("0.0.0.0",port));
             TThreadPoolServer.Args poolArgs = initSyncedPoolArgs(
                     serverTransport,
                     processor,
@@ -59,12 +65,13 @@ public class ThriftServiceThread extends Thread {
                     config.getRpcMaxConcurrentClientNum(),
                     config.getThriftServerAwaitTimeForStopService());
             tServer = new TThreadPoolServer(poolArgs);
+            tServer.setServerEventHandler(new RPCServiceHandler(impl));
         } catch (TTransportException e) {
             String errorMessage = String.format("Bind for %s:%s failed: port is already allocated.", host, port);
             logger.error(errorMessage);
             throw new StartupException(errorMessage, TSStatusCode.START_UP_ERROR.getStatusCode());
         }
-        tServer = new TThreadPoolServer(new TThreadPoolServer.Args(serverTransport).processor(processor));
+
     }
 
 
@@ -77,7 +84,7 @@ public class ThriftServiceThread extends Thread {
         int min = Math.min(maxWorkerThreads, Runtime.getRuntime().availableProcessors());
         TThreadPoolServer.Args poolArgs = new TThreadPoolServer.Args(transport);
         SynchronousQueue<Runnable> queue = new SynchronousQueue<>();
-        poolArgs.executorService = ThreadPoolFactory.newFixedThreadPool(maxWorkerThreads, threadsName,queue);
+        poolArgs.executorService = new ThreadPoolExecutor(min, maxWorkerThreads,60, TimeUnit.SECONDS,queue);
         poolArgs.processor(processor);
         poolArgs.protocolFactory(binaryProtocolFactory);
         poolArgs.transportFactory(RpcTransportFactory.getInstance());

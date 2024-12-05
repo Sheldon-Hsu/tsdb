@@ -53,6 +53,7 @@ public class TSDBServiceImpl implements TSDBRpcService.Iface {
     private static final Logger logger = LoggerFactory.getLogger(TSDBServiceImpl.class);
 
     private static final ServiceProvider serviceProvider = ServiceProvider.getInstance();
+    private InsertDataReq request;
 
     @Override
     public TSOpenSessionResp openSession(TSOpenSessionReq request) throws TException {
@@ -75,6 +76,11 @@ public class TSDBServiceImpl implements TSDBRpcService.Iface {
 
     @Override
     public TSDBStatus insertData(InsertDataReq request) throws TException {
+
+        String catalog = request.getCatalog();
+        String table = request.getTable();
+        byte[] data = request.getData();
+
 
         return null;
     }

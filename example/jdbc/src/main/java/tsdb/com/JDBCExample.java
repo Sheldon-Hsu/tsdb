@@ -28,7 +28,7 @@ public class JDBCExample {
         Class.forName("com.tsdb.jdbc.Driver");
         Connection connection =
                 DriverManager.getConnection(
-                        "jdbc:tsdb://127.0.0.1:9088?version=V_0_1", "root", "root");
+                        "jdbc:tsdb://127.0.0.1:9088", "root", "root");
         LOGGER.info("connection success.");
         connection.close();
         LOGGER.info("connection close success.");

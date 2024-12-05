@@ -63,7 +63,17 @@ public class RPCService implements IService {
             return;
         }
         logger.info("RPCService start...");
-        rpcServiceThread = new ThriftServiceThread();
+        try {
+            rpcServiceThread = new ThriftServiceThread();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
         rpcServiceThread.start();
         logger.info("RPCService started");
     }

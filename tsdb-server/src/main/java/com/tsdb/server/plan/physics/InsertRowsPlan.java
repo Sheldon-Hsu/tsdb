@@ -44,18 +44,29 @@ package com.tsdb.server.plan.physics;
 
 import com.tsdb.jdbc.tsfile.meta.MetaConstant;
 
-public class InsertRowsPlan extends InsertRowPlan{
-    @Override
+public class InsertRowsPlan {
+    private String catalog;
+    private String table;
+    private Object[][] values;
+
     public String getCatalog() {
-        return null;
+        return catalog;
     }
 
-    @Override
-    public String getSchema() {
-        return null;
+
+    public String getTable() {
+        return table;
     }
 
-    @Override
+
+    public void setCatalog(String catalog) {
+        this.catalog = catalog;
+    }
+
+    public void setTable(String table) {
+        this.table = table;
+    }
+
     public MetaConstant.ObjectType getObject() {
         return null;
     }

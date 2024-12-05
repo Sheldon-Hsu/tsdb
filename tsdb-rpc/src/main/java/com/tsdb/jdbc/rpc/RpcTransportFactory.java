@@ -113,6 +113,9 @@ public class RpcTransportFactory extends TTransportFactory {
   }
 
   public static RpcTransportFactory getInstance() {
+    if (INSTANCE == null){
+      reInit();
+    }
     return INSTANCE;
   }
 }

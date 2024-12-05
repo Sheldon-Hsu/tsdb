@@ -46,6 +46,8 @@ import com.tsdb.jdbc.tsfile.meta.MetaConstant;
 import com.tsdb.jdbc.tsfile.meta.TableInfo;
 
 public class InsertRowPlan implements PhysicalPlan{
+    protected String catalog;
+    protected String table;
     private TableInfo tableInfo ;
     private long time;
     private int id;
