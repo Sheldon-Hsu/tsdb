@@ -134,7 +134,7 @@ public class TSDBConnectionParams {
         return this.timeZone;
     }
 
-    public boolean isUseSSL() {
+    public boolean      isUseSSL() {
         return useSSL;
     }
 

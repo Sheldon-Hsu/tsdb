@@ -28,6 +28,9 @@
 
 package com.tsdb.jdbc.common.data;
 
+import com.tsdb.jdbc.common.io.BytesUtils;
+import com.tsdb.jdbc.common.io.IOUtils;
+
 import java.sql.Types;
 
 public enum DataType {
@@ -74,5 +77,13 @@ public enum DataType {
 
     public Integer getCode() {
         return code;
+    }
+    /**
+     * get type byte.
+     *
+     * @return byte number
+     */
+    public byte[] serialize() {
+        return BytesUtils.intToBytes(code);
     }
 }
