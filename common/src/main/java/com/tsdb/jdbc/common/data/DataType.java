@@ -28,7 +28,14 @@
 
 package com.tsdb.jdbc.common.data;
 
+import com.tsdb.jdbc.common.io.BytesUtils;
+
+import java.sql.Timestamp;
 import java.sql.Types;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public enum DataType {
     BOOLEAN(Types.BOOLEAN),
@@ -41,8 +48,7 @@ public enum DataType {
     ARRAY(Types.ARRAY),
     BINARY(Types.BINARY),
     DATE(Types.DATE),
-    TIMESTAMP(Types.TIMESTAMP)
-    ;
+    TIMESTAMP(Types.TIMESTAMP);
 
     private final Integer code;
 
@@ -74,5 +80,46 @@ public enum DataType {
 
     public Integer getCode() {
         return code;
+    }
+
+    /**
+     * get type byte.
+     *
+     * @return byte number
+     */
+    public byte[] serialize() {
+        return BytesUtils.intToBytes(code);
+    }
+
+    public static DataType deserialize(byte[] bytes) {
+        int code = BytesUtils.bytesToInt(bytes);
+        return deserialize(code);
+    }
+
+    public static DataType deserialize(int code) {
+        return codeType.get(code);
+    }
+
+    private static final Map<Class, DataType> clazzType = new HashMap<>();
+    private static final Map<Integer, DataType> codeType = new HashMap<>();
+
+    static {
+        clazzType.put(String.class, VARCHAR);
+        clazzType.put(Short.class, SMALLINT);
+        clazzType.put(Integer.class, INTEGER);
+        clazzType.put(Long.class, BIGINT);
+        clazzType.put(Double.class, DOUBLE);
+        clazzType.put(Float.class, FLOAT);
+        clazzType.put(Timestamp.class, TIMESTAMP);
+        clazzType.put(Date.class, DATE);
+        clazzType.put(Arrays.class, ARRAY);
+
+        for (DataType value : values()) {
+            codeType.put(value.code, value);
+        }
+    }
+
+    public static DataType getType(Class<?> clazz) {
+        return clazzType.get(clazz);
     }
 }

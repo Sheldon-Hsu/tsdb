@@ -42,6 +42,7 @@
 package com.tsdb.server.service.thrift;
 
 import com.tsdb.common.rpc.thrift.TSDBStatus;
+import com.tsdb.jdbc.rpc.TSStatusCode;
 import com.tsdb.server.service.ServiceProvider;
 import com.tsdb.server.service.login.SessionStatus;
 import com.tsdb.rpc.thrift.*;
@@ -71,7 +72,8 @@ public class TSDBServiceImpl implements TSDBRpcService.Iface {
 
     @Override
     public TSDBStatus closeSession(TSCloseSessionReq request) throws TException {
-        return null;
+
+        return new TSDBStatus(TSStatusCode.SUCCESS_STATUS.getStatusCode());
     }
 
     @Override
